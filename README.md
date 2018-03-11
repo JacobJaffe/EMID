@@ -9,6 +9,8 @@ The surface, a pegboard, can have auxiliary structures attached to control the p
 The architecture of the SHIDI is divided into 9 components: 6 physical parts, and 3 digital modules.
 
 ### Physical:
+<img align="right" src="./mockups/SHIDI_mockup.png" height="250"> 
+
 1. **Board**: The board is a rectangular pegboard. On the left, right, and upper sides of the board, the board has sides to prevent balls from leaving the pegboard. On the upper side of the board there are two legs to tilt the board at an angle.
 2. **Camera**: The camera is positioned above (orthogonally to the angle of the surface) the board. The camera relays data to the computer via a usb cable.
 3. **Camera Mount**: the camera bound fixes the location of the camera with respect to the board.
@@ -21,3 +23,17 @@ The architecture of the SHIDI is divided into 9 components: 6 physical parts, an
 8. **Locations to MIDI**: Convert entity locations to MIDI, using *Mido*. Each ball will have its own MIDI channel. 
 9. **MIDI to Sound**:  Convert MIDI to sound, using *Reason*.
 
+## Parts:
+- Colorful balls
+- Webcam (or some low-res cheap camera)
+- Computer (our laptops)
+- USB cable for Camera
+- Plywood/MDF (for table and rails)
+- 2x4s (for legs and for guide rails)
+- Fasteners (nails, screws, wood glue)
+- Dowels (for pegs)
+- Spray paint (Black, Green, etc.)
+- Black Gloves
+- LED strips (For lighting the field)
+- Power Cable (for lights)
+- Camera mounting equipment (selfie stick? Cheap Tripod?)
