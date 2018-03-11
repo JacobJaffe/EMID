@@ -18,7 +18,6 @@ The architecture of the SHIDI is divided into 9 components: 6 physical parts, an
 5. **Lights** (not Shown): The board is lit with strips of LEDs mounted to the side rails.
 6. **Computer** (Not shown): the computer receives and handles (see next section) the data from the camera.
 
----
 ### Digital:
 7. **Video to entity locations**: Interpret the video feed to determine the location of each entity on the board. Done in python with *OpenCV*. 
 8. **Locations to MIDI**: Convert entity locations to MIDI, using *Mido*. Each ball will have its own MIDI channel. 
