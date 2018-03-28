@@ -10,7 +10,7 @@ Our software will process the video stream, mapping the positions of objects to 
 The architecture of the SHIDI is divided into 9 components: 6 physical parts, and 3 digital modules.
 
 ### Physical:
-<img align="right" src="./mockups/SHIDI_mockup.png" height="250"> 
+<img align="right" src="./docs/mockups/SHIDI_mockup.png" height="250"> 
 
 1. **Board**: The board is a rectangular pegboard. On the left, right, and upper sides of the board, the board has sides to prevent balls from leaving the pegboard. On the upper side of the board there are two legs to tilt the board at an angle.
 2. **Camera**: The camera is positioned above (orthogonally to the angle of the surface) the board. The camera relays data to the computer via a usb cable.
@@ -44,5 +44,8 @@ The architecture of the SHIDI is divided into 9 components: 6 physical parts, an
 - [OpenCV](https://opencv.org/):  for object tracking and edge detection
 
 ## Sample Data:
-
+<img src="./docs/sample_data/1.png" height="250"> 
+<img src="./docs/sample_data/2.png" height="250"> 
+<img src="./docs/sample_data/3.png" height="250"> 
+<img src="./docs/sample_data/4.png" height="250"> 
 
