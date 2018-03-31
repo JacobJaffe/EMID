@@ -39,11 +39,6 @@ if __name__ == "__main__":
         if len(corners) > 0:
             cv2.aruco.drawDetectedMarkers(frame,corners,ids)
 
-            # a = False
-            # b = False
-            # c = False
-            # d = False
-
             # We gotta do this case they are not gaurenteed to be sorted,
             # and we its not worth re ordering both of these arrays
             for i in range(len(ids)):
