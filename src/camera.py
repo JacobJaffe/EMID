@@ -23,7 +23,7 @@ class Camera:
         self._corners = [None]*4
 
         # Top left, bottom left, top right, bottom right
-        self.aruco_ids = [0, 4, 5, 9]
+        self._aruco_ids = [0, 4, 5, 9]
 
     def _all_corners_found(self):
         for c in self._corners:
@@ -41,8 +41,14 @@ class Camera:
 
         if len(corners) != 0:
             cv2.aruco.drawDetectedMarkers(frame, corners, ids)
-            markers = [Marker(id, corners[id][0])
-                       for id in sorted(ids) if id in self.aruco_ids]
+
+            markers = [None] * 4
+            for i in range(len(ids)):
+                for j in range(4):
+                    if (ids[i] == self._aruco_ids[j]):
+                        print(corners[i])
+                        markers[j] = Marker(id, corners[i][0])
+                        
             return markers
         return []
 
