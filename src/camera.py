@@ -25,8 +25,10 @@ class Camera:
         # Top left, bottom left, top right, bottom right
         self._aruco_ids = [0, 4, 5, 9]
 
-    def _all_corners_found(self):
-        for c in self._corners:
+    def _all_corners_found(self, corners):
+        if (len(corners) < 4):
+            return False
+        for c in corners:
             if c is None:
                 return False
         return True
@@ -46,9 +48,8 @@ class Camera:
             for i in range(len(ids)):
                 for j in range(4):
                     if (ids[i] == self._aruco_ids[j]):
-                        print(corners[i])
                         markers[j] = Marker(id, corners[i][0])
-                        
+
             return markers
         return []
 
@@ -61,10 +62,13 @@ class Camera:
         # Create zero matrix to load projection
 
         corners = self._get_corners(frame)
-        if len(corners) == 4:
+
+        if self._all_corners_found(corners):
             self._corners = corners
+
         warp = None
-        if self._all_corners_found():
+
+        if self._all_corners_found(self._corners):
             centers = []
             for c in self._corners:
                 [x, y] = c.get_corner_center()
