@@ -51,7 +51,8 @@ while True:
 	# blobs left in the mask
 	mask = cv2.inRange(hsv, greenLower, greenUpper)
 	mask = cv2.erode(mask, None, iterations=2)
-	mask = cv2.dilate(mask, None, iterations=2)
+	mask = cv2.dilate(mask, None, iterations=3)
+
 	# find contours in the mask and initialize the current
 	# (x, y) center of the ball
 	cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
@@ -73,6 +74,17 @@ while True:
 			(0, 255, 255), 2)
 		cv2.circle(frame, center, 5, (0, 0, 255), -1)
 
+
+		# only proceed if the radius meets a minimum size
+		if radius > 10:
+			# draw the circle and centroid on the frame,
+			# then update the list of tracked points
+			cv2.circle(frame, (int(x), int(y)), int(radius),
+				(0, 255, 255), 2)
+			cv2.circle(frame, center, 5, (0, 0, 255), -1)
+
+	# update the points queue
+	pts.appendleft(center)
 
 	# loop over the set of tracked points
 	for i in range(1, len(pts)):
