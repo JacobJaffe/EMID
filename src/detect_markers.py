@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 x, y = getCornerCenter(corner)
 
                 # draw pink circles on the 4 corners
-                cv2.circle(frame, (int(x), int(y)), 5, (255,0,255), -1)
+                cv2.circle(frame, (int(x), int(y)), 5, (25 5,0,255), -1)
 
                 # add to our np.array for warping
                 corner_centers[index] = [x, y]
