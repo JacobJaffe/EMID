@@ -25,7 +25,7 @@ while(True):
     frame_h, frame_w = frame.shape[:2]
 
     # blank copy
-    frame_projection = np.zeros((frame_h, frame_w, 3), np.uint8)
+    frame_projection = np.zeros((600, 600, 3), np.uint8)
 
     # fill blank with warp
     if warp is not None:
