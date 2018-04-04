@@ -16,11 +16,9 @@ args = vars(ap.parse_args())
 # define the lower and upper boundaries of the "green"
 # ball in the HSV color space, then initialize the
 # list of tracked points
-greenLower = (29, 86, 6)
-greenUpper = (64, 255, 255)
+greenLower = (0, 126, 53)
+greenUpper = (4, 255, 255)
 
-redLower = (200, 0, 0)
-redUpper = (255, 130, 130)
 pts = deque(maxlen=args["buffer"])
 
 # if a video path was not supplied, grab the reference
@@ -70,6 +68,12 @@ while True:
 		((x, y), radius) = cv2.minEnclosingCircle(c)
 		M = cv2.moments(c)
 		center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+		# draw the circle and centroid on the frame,
+		# then update the list of tracked points
+		cv2.circle(frame, (int(x), int(y)), int(radius),
+			(0, 255, 255), 2)
+		cv2.circle(frame, center, 5, (0, 0, 255), -1)
+
 
 		# only proceed if the radius meets a minimum size
 		if radius > 10:
