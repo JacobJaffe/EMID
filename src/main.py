@@ -1,8 +1,9 @@
 from camera import Camera
 import cv2
 import numpy as np
+import sys
 
-cam = Camera(1)
+cam = Camera(int(sys.argv[1]))
 while True:
     frame, warp = cam.get_frame_and_warp()
     h, w = frame.shape[:2]
