@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 from transform import four_point_transform
+import imutils
 
 
 class Marker:
@@ -57,6 +58,11 @@ class Camera:
 
         # Get frame
         ret, frame = self._cap.read()
+
+        # resize for efficency (our camera has too high of a resolution!)
+        frame = imutils.resize(frame, width=600)
+
+        # get height and width
         h, w = frame.shape[:2]
 
         # Create zero matrix to load projection
