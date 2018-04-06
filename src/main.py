@@ -25,16 +25,16 @@ color = blue
 BUFFER = 32
 
 
-def write_warp(warp, projection):
-    if warp is not None:
-        warp_h, warp_w = warp.shape[:2]
-        # resize warp to fill the window
-        if warp_h > warp_w:
-            warp = imutils.resize(warp, height=frame_h)
-        else:
-            warp = imutils.resize(warp, width=frame_w)
-        projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
-        return warp, projection
+# def write_warp(warp, projection):
+#     if warp is not None:
+#         warp_h, warp_w = warp.shape[:2]
+#         # resize warp to fill the window
+#         if warp_h > warp_w:
+#             warp = imutils.resize(warp, height=frame_h)
+#         else:
+#             warp = imutils.resize(warp, width=frame_w)
+#         projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
+#         return warp, projection
 
 
 def get_mask(projection, color):
@@ -65,7 +65,14 @@ while(True):
     frame_projection = np.zeros((600, 600, 3), np.uint8)
 
     # fill blank with warp
-    warp, frame_projection = write_warp(warp, frame_projection)
+    if warp is not None:
+        warp_h, warp_w = warp.shape[:2]
+        # resize warp to fill the window
+        if warp_h > warp_w:
+            warp = imutils.resize(warp, height=frame_h)
+        else:
+            warp = imutils.resize(warp, width=frame_w)
+        frame_projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
 
     mask = get_mask(frame_projection, color)
 
@@ -75,6 +82,7 @@ while(True):
 	   cv2.CHAIN_APPROX_SIMPLE)[-2]
     center = None
 
+    i = 1
     # only proceed if at least one contour was found
     for c in cnts:
         # find the largest contour in the mask, then use
@@ -85,7 +93,7 @@ while(True):
         
         # send OSC message to Max
         # Make sure y is inverted in value when jsending messages
-        client.send_message('/'+str(CHANNEL), [x/X_MAX*100., (1-(y/Y_MAX))*100., 64])
+        client.send_message('/{0}/{1}'.format(CHANNEL, i), [x/X_MAX*100., (1-(y/Y_MAX))*100., 64])
         
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
@@ -97,6 +105,7 @@ while(True):
 
         # update the points queue
         pts.appendleft(center)
+        i += 1
 
     # loop over the set of tracked points
     for i in range(1, len(pts)):
