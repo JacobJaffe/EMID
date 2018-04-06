@@ -2,23 +2,30 @@ from camera import Camera
 import cv2
 import numpy as np
 import sys
+from pythonosc import udp_client
+
 # import the necessary packages
 from collections import deque
 import argparse
 import imutils
 import sys
 
-greenLower = (29, 86, 6)
-greenUpper = (64, 255, 255)
+PORT = 3649
+CHANNEL = 1
+X_MAX = 600.0
+Y_MAX = 600.0
+yellow = {'lower': (5,40,245), 'upper': (44,74,255)}
+#           (H_min, S_min, V_min)      (H_max, S_max, V_max)
+green = {'lower': (29, 86, 6), 'upper': (64, 255, 255)}
+red = {'lower': (0, 126, 53), 'upper': (4, 255, 255)}
+blue = {'lower': (103,102,0), 'upper': (113,255,255)}
 
-
-redLower = (0, 126, 53)
-redUpper = (4, 255, 255)
-
+color = blue
 # 64 frames
 BUFFER = 32
 pts = deque(maxlen=BUFFER)
 
+client = udp_client.SimpleUDPClient('127.0.0.1', PORT)
 cam = Camera(int(sys.argv[1]))
 while(True):
     frame, warp = cam.get_frame_and_warp()
@@ -49,7 +56,7 @@ while(True):
 	# construct a mask for the color "red", then perform
 	# a series of dilations and erosions to remove any small
 	# blobs left in the mask
-    mask = cv2.inRange(hsv, redLower, redUpper)
+    mask = cv2.inRange(hsv, color['lower'], color['upper'])
     mask = cv2.erode(mask, None, iterations=2)
     mask = cv2.dilate(mask, None, iterations=3)
 
@@ -66,6 +73,11 @@ while(True):
         # centroid
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
+        
+        # send OSC message to Max
+        # Make sure y is inverted in value when jsending messages
+        client.send_message('/'+str(CHANNEL), [x/X_MAX*100., (1-(y/Y_MAX))*100., 64])
+        
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
         # draw the circle and centroid on the frame,
