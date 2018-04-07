@@ -2,7 +2,7 @@ from camera import Camera
 import cv2
 import numpy as np
 import sys
-from pythonosc import udp_client
+from pythonosc import udp_client, osc_message_builder
 
 # import the necessary packages
 from collections import deque
@@ -11,9 +11,10 @@ import imutils
 import sys
 
 PORT = 3649
-CHANNEL = 1
+CHANNEL = 2
 X_MAX = 600.0
-Y_MAX = 600.0
+Y_MAX = 500.0
+PROJECTION_SIZE = [800, 800]
 yellow = {'lower': (5,40,245), 'upper': (44,74,255)}
 #           (H_min, S_min, V_min)      (H_max, S_max, V_max)
 green = {'lower': (29, 86, 6), 'upper': (64, 255, 255)}
@@ -23,8 +24,17 @@ color = blue
 
 # 64 frames
 BUFFER = 32
-
-
+prev = {1: None, 2: None, 3: None}
+def getKey(radius):
+    print(radius)
+    d1, d2, d3 = np.abs(radius-7.), np.abs(radius-15.), np.abs(radius-19.)
+    d = min([d1,d2,d3])
+    if d1 == d:
+        return 1
+    elif d2 == d:
+        return 2
+    else:
+        return 3
 # def write_warp(warp, projection):
 #     if warp is not None:
 #         warp_h, warp_w = warp.shape[:2]
@@ -52,7 +62,7 @@ def get_mask(projection, color):
     return mask
 
 
-pts = deque(maxlen=BUFFER)
+pts = {1: deque(maxlen=BUFFER), 2: deque(maxlen=BUFFER), 3: deque(maxlen=BUFFER)}
 client = udp_client.SimpleUDPClient('127.0.0.1', PORT)
 cam = Camera(int(sys.argv[1]))
 while(True):
@@ -62,7 +72,7 @@ while(True):
     frame_h, frame_w = frame.shape[:2]
 
     # blank copy
-    frame_projection = np.zeros((600, 600, 3), np.uint8)
+    frame_projection = np.zeros((PROJECTION_SIZE[0], PROJECTION_SIZE[1], 3), np.uint8)
 
     # fill blank with warp
     if warp is not None:
@@ -84,16 +94,17 @@ while(True):
 
     i = 1
     # only proceed if at least one contour was found
+    # if cnts:
     for c in cnts:
         # find the largest contour in the mask, then use
         # it to compute the minimum enclosing circle and
         # centroid
-        # c = max(cnts, key=cv2.contourArea)
+        #c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
-        
+       # print(radius) 
         # send OSC message to Max
         # Make sure y is inverted in value when jsending messages
-        client.send_message('/{0}/{1}'.format(CHANNEL, i), [x/X_MAX*100., (1-(y/Y_MAX))*100., 64])
+       
         
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
@@ -102,22 +113,30 @@ while(True):
         cv2.circle(frame_projection, (int(x), int(y)), int(radius),
                 (0, 255, 255), 2)
         cv2.circle(frame_projection, center, 5, (0, 0, 255), -1)
-
+        key = getKey(radius)
         # update the points queue
-        pts.appendleft(center)
+        pts[key].appendleft(center)
         i += 1
+        if prev[key] is not None:
+            cur = center
+            dx, dy = cur[0]-prev[key][0], cur[1]-prev[key][1]
+            dxdt, dydt = dx/2., dy/2.
+            velocity = np.abs(dydt)
+            client.send_message('/{0}'.format(CHANNEL), [key] + [x/X_MAX*100., (1-(y/Y_MAX))*100., velocity])
+        prev[key] = center
+        
+        
+#     # loop over the set of tracked points
+#     for i in range(1, len(pts)):
+#         # if either of the tracked points are None, ignore
+#         # them
+#         if pts[i - 1] is None or pts[i] is None:
+#             continue
 
-    # loop over the set of tracked points
-    for i in range(1, len(pts)):
-        # if either of the tracked points are None, ignore
-        # them
-        if pts[i - 1] is None or pts[i] is None:
-            continue
-
-        # otherwise, compute the thickness of the line and
-        # draw the connecting lines
-        thickness = int(np.sqrt(BUFFER / float(i + 1)) * 2.5)
-        cv2.line(frame_projection, pts[i - 1], pts[i], (0, 0, 255), thickness)
+#         # otherwise, compute the thickness of the line and
+#         # draw the connecting lines
+#         thickness = int(np.sqrt(BUFFER / float(i + 1)) * 2.5)
+#         cv2.line(frame_projection, pts[i - 1], pts[i], (0, 0, 255), thickness)
 
 
     cv2.imshow('Camera', frame)
