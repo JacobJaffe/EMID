@@ -22,7 +22,7 @@ Y_MAX = 500.0
 PROJECTION_SIZE = [800, 800]
 
 # Limits for masks: (H_min, S_min, V_min)      (H_max, S_max, V_max)
-GREEN_LIMITS = {'lower': (29, 86, 6), 'upper': (64, 255, 255)}
+GREEN_LIMITS = {'lower': (33, 50, 26), 'upper': (102, 145, 255)}
 BLUE_LIMITS = {'lower': (103,102,0), 'upper': (122,255,255)}
 
 # 64 frames
@@ -82,11 +82,15 @@ def getKey(center, radius, color):
     # we know there is a bias for it to think the radius is smaller than it is, so we attempt to work around that
     # check that radius of 2 is not really 3
     if radius_guess == 2:
+        if d_r2 * 2 < d_r3:
+            return 2
         if d_3 < d_2:
             return 3
         return 2
 
     if radius_guess == 1:
+        if d_r1 * 2 < d_r2:
+            return 1
         if d_2 < d_1:
             return 2
         return 1
