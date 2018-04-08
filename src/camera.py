@@ -65,9 +65,9 @@ class Camera:
         # get height and width
         h, w = frame.shape[:2]
 
-        # Create zero matrix to load projection
-
-        corners = self._get_corners(frame)
+        # Don't draw the labels onto the warp, because we check that for colors!
+        frame_labled = frame.copy()
+        corners = self._get_corners(frame_labled)
 
         if self._all_corners_found(corners):
             self._corners = corners
@@ -80,11 +80,11 @@ class Camera:
                 [x, y] = c.get_corner_center()
 
                 # draw pink circles on the 4 corners
-                cv2.circle(frame, (int(x), int(y)), 5, (255, 0, 255), -1)
+                cv2.circle(frame_labled, (int(x), int(y)), 5, (255, 0, 255), -1)
                 centers.append([x, y])
             centers = np.array(centers)
             warp = four_point_transform(frame, centers)
-        return frame, warp
+        return frame_labled, warp
 
     def close(self):
         self._cap.release()
