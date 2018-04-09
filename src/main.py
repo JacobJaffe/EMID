@@ -95,6 +95,8 @@ def getKey(center, radius, color):
             return 2
         return 1
 
+    #Somehow this all fails, we return -1 so we can debug
+    return -1;
 
 
 
