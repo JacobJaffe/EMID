@@ -174,12 +174,16 @@ while(True):
             center = (int(x), int(y))
             key = getKey(center, radius, color)
 
+            channel = 1;
+            if color == 'green':
+                channel = 3;
+
             if BALLS[color][key]:
                 cur = center
                 dx, dy = cur[0]-BALLS[color][key]['center'][0], cur[1]-BALLS[color][key]['center'][1]
                 dxdt, dydt = dx/2., dy/2.
                 velocity = np.abs(dydt)
-                client.send_message('/{0}'.format(CHANNEL), [key] + [x/X_MAX*100., (1-(y/Y_MAX))*100., velocity])
+                client.send_message('/{0}'.format(channel), [key] + [x/X_MAX*100., (1-(y/Y_MAX))*100., velocity])
             BALLS[color][key] = {'center': center, 'radius': radius, 'key': key, 'last_frame' : frame_number}
 
     # Draw the stuff
