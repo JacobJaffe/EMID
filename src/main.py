@@ -153,8 +153,10 @@ while(True):
             warp = imutils.resize(warp, height=frame_h)
         else:
             warp = imutils.resize(warp, width=frame_w)
+        # TODO Here is where we have a good warp
         frame_projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
 
+    # TODO: construct the masks in the board update
     blue_mask = getMask(frame_projection, BLUE_LIMITS)
     green_mask = getMask(frame_projection, GREEN_LIMITS)
 
