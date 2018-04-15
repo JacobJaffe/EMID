@@ -1,7 +1,6 @@
 import numpy as np
 import uuid
-import abc
-
+from abc import ABC, abstractmethod
 
 '''
 EntityState:
@@ -9,18 +8,20 @@ EntityState:
 '''
 
 
-class EntityState:
-    def __init__(self):
+class EntityState():
+    def __init__(self, frame_number=None):
         self.x = None
         self.y = None
         self.dx = None
         self.dy = None
-        self.frame_number = None
+        self.frame_number = frame_number
         self.in_collision = False
 
     def update(self, x, y, frame_number):
-        self.dx = np.abs(x-self.x)
-        self.dy = np.abs(y-self.y)
+        if (self.x):
+            self.dx = np.abs(x-self.x)
+        if (self.y):
+            self.dy = np.abs(y-self.y)
         self.x = x
         self.y = y
         self.frame_number = frame_number
@@ -36,10 +37,10 @@ class EntityState:
         return copy_state
 
     def get_location(self):
-        return np.array([self.x, self.y])
+        return np.array((self.x, self.y))
 
 
-class Entity(abc.ABC):
+class Entity(ABC):
 
     def __init__(self, color, frame_number):
         self.current_state = EntityState(frame_number)
@@ -58,10 +59,10 @@ class Entity(abc.ABC):
         return self.current_state.in_collision\
                 and not self.previous_state.in_collision
 
-    @abc.abstract_method
+    @abstractmethod
     def on_collide(self):
         ...
 
-    @abc.abstract_method
+    @abstractmethod
     def is_colliding_with_ball(self, ball):
         ...
