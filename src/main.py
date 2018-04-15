@@ -9,6 +9,9 @@ import argparse
 import imutils
 from board import Board
 
+def nothing(x):
+    pass
+
 # This port means 'EMID'
 PORT = 3649
 
@@ -22,7 +25,13 @@ cam = Camera(int(sys.argv[1]))
 board = Board()
 
 frame_number = 0
+cv2.namedWindow("Trackbars", 0)
+cv2.createTrackbar("Exposure", "Trackbars", 0, 255, nothing)
+
 while(True):
+    exposure = cv2.getTrackbarPos('Exposure','Trackbars')
+
+    #cam.set_exposure(exposure)
     frame_number = frame_number + 1
 
     # get frame from camera

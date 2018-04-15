@@ -19,12 +19,20 @@ class Marker:
 class Camera:
     def __init__(self, camera_id):
         self._cap = cv2.VideoCapture(camera_id)
+        self._cap.set(cv2.CAP_PROP_SETTINGS,1)
+        self._cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
+        self._cap.set(cv2.CAP_PROP_EXPOSURE, -5)
+        print (self._cap.get(cv2.CAP_PROP_EXPOSURE))
+
         self._dictionary =\
             cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
         self._corners = [None]*4
 
         # Top left, bottom left, top right, bottom right
         self._aruco_ids = [0, 4, 5, 9]
+
+    def set_exposure(self, exposure):
+        self._cap.set(cv2.CAP_PROP_EXPOSURE, 40)
 
     def _all_corners_found(self, corners):
         if (len(corners) < 4):

@@ -39,6 +39,14 @@ class EntityState():
     def get_location(self):
         return np.array((self.x, self.y))
 
+    def reset(self):
+        self.x = None
+        self.y = None
+        self.dx = None
+        self.dy = None
+        self.frame_number = None
+        self.in_collision = False
+
 
 class Entity(ABC):
 
@@ -47,6 +55,11 @@ class Entity(ABC):
         self.color = color
         self.id = uuid.uuid1()
         self.previous_state = None
+
+    def reset(self):
+        print("RESET ENTITY: ", self.color, self.id)
+        self.current_state.reset()
+        self.previous_state.reset()
 
     def update_state(self, x, y, frame_number):
         self.previous_state = self.current_state.copy()

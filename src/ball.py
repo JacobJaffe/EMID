@@ -24,8 +24,15 @@ class Ball(Entity):
         return np.linalg.norm(self.get_location() - ball.get_location())
 
     def check_and_set_collision_with_ball(self, ball):
+        # gotta exist
+        if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
+            return False
+        # gotta be around for a little
+        if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
+            return False
+
         dist = self._distance_from_ball(ball)
-        if self.radius + ball.radius <= dist - COLLIDE_SPACER:
+        if (self.radius + ball.radius) >= (dist - COLLIDE_SPACER):
             self.current_state.in_collision = True
             return True
         else:
