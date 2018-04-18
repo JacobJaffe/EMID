@@ -11,7 +11,7 @@ RADICIES = [7., 14., 20.]
 DISPLAY_SIZE = [600, 600]
 
 GREEN_HSV = {'lower': (65,60,60), 'upper': (80,255,255)}
-BLUE_HSV = {'lower': (103, 102, 0), 'upper': (122, 255, 255)}
+BLUE_HSV = {'lower': (102, 93, 72), 'upper': (119, 255, 255)}
 RED_HSV = {'lower': (0, 70, 50), 'upper': (10, 255, 255)}
 YELLOW_HSV = {'lower': (0, 0, 0), 'upper': (0, 0, 0)}
 
