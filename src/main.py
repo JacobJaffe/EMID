@@ -8,9 +8,13 @@ from collections import deque
 import argparse
 import imutils
 from board import Board
+from exposure import *
 
-def nothing(x):
-    pass
+auto_exposure_off()
+exposure_range = get_range(EXPOSURE)
+
+def set_exposure(x):
+    set_value(EXPOSURE, x)
 
 # This port means 'EMID'
 PORT = 3649
@@ -26,7 +30,9 @@ board = Board()
 
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
-cv2.createTrackbar("Exposure", "Trackbars", 0, 255, nothing)
+cv2.createTrackbar("Exposure", "Trackbars",
+                   exposure_range[0],
+                   exposure_range[1], set_exposure)
 
 while(True):
     exposure = cv2.getTrackbarPos('Exposure','Trackbars')
