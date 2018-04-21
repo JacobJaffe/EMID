@@ -2,13 +2,12 @@ import numpy as np
 import uuid
 from abc import ABC, abstractmethod
 
-'''
-EntityState:
-    defines the location and velocity of an entity at a single frame
-'''
-
 
 class EntityState():
+    '''
+    EntityState:
+        defines the location and velocity of an entity at a single frame
+    '''
     def __init__(self, frame_number=None):
         self.x = None
         self.y = None
@@ -38,6 +37,9 @@ class EntityState():
 
     def get_location(self):
         return np.array((self.x, self.y))
+
+    def get_velocity(self):
+        return np.array((self.dx, self.dy))
 
     def reset(self):
         self.x = None

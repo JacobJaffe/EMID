@@ -3,7 +3,7 @@ from camera import Camera
 import cv2
 import numpy as np
 import sys
-from pythonosc import udp_client, osc_message_builder
+from dispatcher import Dispatcher
 from collections import deque
 import argparse
 import imutils
@@ -22,7 +22,7 @@ PORT = 3649
 PROJECTION_SIZE = [600, 600]
 
 # Set up our udp client for sending to Max
-client = udp_client.SimpleUDPClient('127.0.0.1', PORT)
+dispatcher = Dispatcher(port=PORT)
 
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
