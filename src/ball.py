@@ -1,11 +1,6 @@
 from entity import Entity
 import numpy as np
-
-COLLIDE_SPACER = 0
-
-BALL_LARGE = 2
-BALL_MEDIUM = 1
-BALL_SMALL = 0
+from constants import *
 
 class Ball(Entity):
     def __init__(self, color, radius, size):

@@ -1,7 +1,9 @@
 from constants import *
+import cv2
+import numpy as np
 
-class Mask:
-    def __init__(self,  color):
+class Mask(object):
+    def __init__(self, color):
         self.color = color
         self.hsv = HSV[color]
         self.image = None
@@ -18,8 +20,9 @@ class Mask:
             of dilations and erosions to remove any small blobs
             left in the mask '''
         mask = cv2.inRange(hsv, self.hsv['lower'], self.hsv['upper'])
-        if (color == RED):
-            mask = mask | cv2.inRange(hsv, Scalar(170, 70, 50), Scalar(180, 255, 255));
+        # TODO: Scalar is undefined?
+        # if (color == RED):
+        #     mask = mask | cv2.inRange(hsv, Scalar(170, 70, 50), Scalar(180, 255, 255));
 
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=3)

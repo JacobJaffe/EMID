@@ -13,18 +13,11 @@ class Board:
         detecting collisions and sending events to the dispatcher
     '''
     def __init__(self):
-        self.ball_groups = {
-            BLUE: BallGroup(BLUE, RADICIES),
-            GREEN: BallGroup(GREEN, RADICIES),
-            RED: BallGroup(RED, RADICIES)}
-        self.masks = {
-            BLUE: Mask(BLUE),
-            GREEN: Mask(GREEN),
-            RED: Mask(RED)
-        }
+        self.ball_groups = {c: BallGroup(c, RADICIES) for c in COLORS}
+        self.masks = {c: Mask(c) for c in COLORS}
         self.entities = []
         self.sides = []
-        self.masks = {BLUE: None, GREEN: None}
+        # self.masks = {BLUE: None, GREEN: None}
         self.contours = {}
         self.image = None
         self.current_frame = None
@@ -41,7 +34,6 @@ class Board:
         self.image = image
         self.current_frame = frame_number
         self.contours = {}
-
         '''
         For each color:
         1) Construct HSV mask
@@ -58,7 +50,7 @@ class Board:
         '''
         for color in COLORS:
             # contours = self._get_contours_by_mask(image, self.masks[color])
-            self.masks[color].update(image)
+            (self.masks[color]).update(image)
             # contours = self.masks[contours]
             contours = self.masks[color].get_contours()
             self.contours[color] = contours
@@ -113,7 +105,7 @@ class Board:
             # combine masks, convert to appropraite color
             for color in COLORS:
                 # do not be fooled, it is for magical reasons going to really be in BGR
-                bgr_mask = cv2.cvtColor(self.masks[color], cv2.COLOR_GRAY2RGB)
+                bgr_mask = cv2.cvtColor(self.masks[color].mask, cv2.COLOR_GRAY2RGB)
                 bgr_mask[np.where((bgr_mask == [255,255,255]).all(axis = 2))] = BGR[color]
                 combined_mask = combined_mask + bgr_mask
 
