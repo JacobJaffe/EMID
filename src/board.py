@@ -1,4 +1,5 @@
 from ball import Ball
+from mask import Mask
 from entity import Entity
 import cv2
 import numpy as np
@@ -16,36 +17,18 @@ class Board:
             BLUE: BallGroup(BLUE, RADICIES),
             GREEN: BallGroup(GREEN, RADICIES),
             RED: BallGroup(RED, RADICIES)}
+        self.masks = {
+            BLUE: Mask(BLUE),
+            GREEN: Mask(GREEN),
+            RED: Mask(RED)
+        }
         self.entities = []
         self.sides = []
         self.masks = {BLUE: None, GREEN: None}
         self.contours = {}
         self.image = None
         self.current_frame = None
-        self.tracked_entities={};
-
-    def _create_mask(self, image, color):
-        ''' creates a mask over a image for a color '''
-
-        ''' resize the frame, blur it, and convert it to the
-            HSV color space'''
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-        ''' construct a mask for the color, then perform a series
-            of dilations and erosions to remove any small blobs
-            left in the mask '''
-        mask = cv2.inRange(hsv, color['lower'], color['upper'])
-        if (color == RED):
-            mask = mask | cv2.inRange(hsv, Scalar(170, 70, 50), Scalar(180, 255, 255));
-
-        mask = cv2.erode(mask, None, iterations=2)
-        mask = cv2.dilate(mask, None, iterations=3)
-        return mask
-
-    def _get_contours_by_mask(self, image, mask):
-        ''' Returns balls of a given color determined by mask '''
-        return cv2.findContours(mask.copy(),
-                cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+        self.tracked_entities={}
 
     def update(self, image, frame_number):
         '''
@@ -63,16 +46,21 @@ class Board:
         For each color:
         1) Construct HSV mask
         '''
-        for color in COLORS:
-            mask = self._create_mask(image, HSV[color])
-            self.masks[color] = mask
+        # for mask in self.masks.values():
+        #     mask.update(image)
+        # for color in COLORS:
+        #     mask = self._create_mask(image, HSV[color])
+        #     self.masks[color] = mask
 
         '''
         2) Get contours based on mask
         3) Update entity locations (TOOD: all entities, just balls for now)
         '''
         for color in COLORS:
-            contours = self._get_contours_by_mask(image, self.masks[color])
+            # contours = self._get_contours_by_mask(image, self.masks[color])
+            self.masks[color].update(image)
+            # contours = self.masks[contours]
+            contours = self.masks[color].get_contours()
             self.contours[color] = contours
             for c in contours:
                 ((x, y), radius) = cv2.minEnclosingCircle(c)
