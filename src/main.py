@@ -31,13 +31,13 @@ dispatcher = Dispatcher(port=PORT)
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
 board = Board()
+global should_update
 
 should_update = False
 
 def set_update_true():
     should_update = True
 
-global should_update
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
 cv2.createTrackbar("Exposure", "Trackbars",
