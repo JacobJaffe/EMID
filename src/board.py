@@ -75,12 +75,12 @@ class Board:
                         collided = ball.check_and_set_collision_with_ball(ball2)
                         if (collided == True):
                             print("COLLISON: ", color, ball.size, "with", color2, ball2.size)
+        return
 
-     def send_events(self, dispatcher):
+    def send_events(self, dispatcher):
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(dispatcher)
-
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None

@@ -15,7 +15,7 @@ exposure_range = get_range(EXPOSURE)
 
 def set_exposure(x):
     set_value(EXPOSURE, x)
-
+set_exposure(exposure_range[0])
 # This port means 'EMID'
 PORT = 3649
 

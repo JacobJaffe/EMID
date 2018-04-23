@@ -1,6 +1,7 @@
 from entity import Entity
 import numpy as np
 from constants import *
+from events import BallCollision
 
 class Ball(Entity):
     def __init__(self, color, radius, size):
@@ -50,6 +51,6 @@ class Ball(Entity):
         '''
         Send collisions:
         '''
-        if (ball.current_state.in_collision):
+        if (self.current_state.in_collision):
             event = BallCollision(self)
             dispatcher.send(event)
