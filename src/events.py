@@ -10,14 +10,14 @@ class Event(ABC):
     def as_osc_message(self):
         ...
 
-class BallBallCollision(Event):
-    def __init__(self, ball1, ball2):
-        self.ball1 = ball1
-        self.ball2 = ball2
+class BallCollision(Event):
+    def __init__(self, ball):
+        self.ball = ball
 
     def as_osc_message(self):
         address = 'collide'
-        return address, [None]*6
+        message = [self.ball.size, COLLISION, self.x, self.y, self.dx, self.dy]
+        return address, message
 
 class BallMove(Event):
     def __init__(self, ball):
@@ -29,5 +29,6 @@ class BallMove(Event):
         self.channel = COLOR_CHANNELS[ball.color]
 
     def as_osc_message(self):
+        address = str(self.channel)
         message = [self.ball.size, PITCHBEND, self.x, self.y, self.dx, self.dy]
-        return str(self.channel), message
+        return address, message

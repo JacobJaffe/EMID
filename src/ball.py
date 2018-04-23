@@ -37,3 +37,19 @@ class Ball(Entity):
     def is_colliding_with_ball(self, ball):
         if self.radius + ball.radius <= dist - COLLIDE_SPACER:
             return True
+
+    def send_events(self, dispatcher):
+        '''
+        Sends pitch bend events, Note on events, note off events, and collision events
+        '''
+
+        '''
+        TODO: send on, off, bend pitch
+        '''
+
+        '''
+        Send collisions:
+        '''
+        if (ball.current_state.in_collision):
+            event = BallCollision(self)
+            dispatcher.send(event)

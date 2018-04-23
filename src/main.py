@@ -60,6 +60,7 @@ while(True):
         frame_projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
 
     board.update(frame_projection, frame_number)
+    board.send_events(dispatcher)
 
     mask, drawn_img = board.display(True, True)
     cv2.imshow("Mask", mask)
