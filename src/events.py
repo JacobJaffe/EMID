@@ -16,7 +16,7 @@ class BallCollision(Event):
 
     def as_osc_message(self):
         address = 'collide'
-        message = [self.ball.size, COLLISION, self.x, self.y, self.dx, self.dy]
+        message = [self.ball.size, COLLISION, self.ball.current_state.x, self.ball.current_state.y, self.ball.current_state.dx, self.ball.current_state.dy]
         return address, message
 
 class BallMove(Event):
@@ -30,5 +30,5 @@ class BallMove(Event):
 
     def as_osc_message(self):
         address = str(self.channel)
-        message = [self.ball.size, PITCHBEND, self.x, self.y, self.dx, self.dy]
+        message = [self.ball.size, PITCHBEND, self.ball.current_state.x, self.ball.current_state.y, self.ball.current_state.dx, self.ball.current_state.dy]
         return address, message
