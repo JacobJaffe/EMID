@@ -15,7 +15,11 @@ exposure_range = get_range(EXPOSURE)
 
 def set_exposure(x):
     set_value(EXPOSURE, x)
-set_exposure(exposure_range[0])
+
+DEFAULT_EXPOSURE = exposure_range[0]
+
+set_exposure(DEFAULT_EXPOSURE)
+
 # This port means 'EMID'
 PORT = 3649
 
@@ -28,14 +32,20 @@ dispatcher = Dispatcher(port=PORT)
 cam = Camera(int(sys.argv[1]))
 board = Board()
 
+global should_update
+should_update = False
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
 cv2.createTrackbar("Exposure", "Trackbars",
                    exposure_range[0],
-                   exposure_range[1], set_exposure)
+                   exposure_range[1], lambda: should_update = True)
 
+last_exposure = DEFAULT_EXPOSURE
 while(True):
-    exposure = cv2.getTrackbarPos('Exposure','Trackbars')
+    cur_exposure = cv2.getTrackbarPos('Exposure','Trackbars')
+    if cur_exposure == last_exposure and should_update:
+        should_update = False
+    last_exposure = cur_exposure
 
     #cam.set_exposure(exposure)
     frame_number = frame_number + 1
