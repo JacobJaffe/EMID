@@ -13,6 +13,7 @@ class Event(ABC):
 class BallCollision(Event):
     def __init__(self, ball):
         self.ball = ball
+        self.channel = COLOR_CHANNELS[ball.color]
 
     def as_osc_message(self):
         address = str(self.channel)
