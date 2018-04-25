@@ -48,6 +48,17 @@ class Ball(Entity):
         TODO: send on, off, bend pitch
         '''
 
+        #TODO: make this smarter so it dosnt send too many
+        if (not self.current_state.x) or (not self.current_state.y):
+            event = BallOff(self)
+            print("NOTE OFF: ", self.color, self.size)
+            dispatcher.send(event)
+
+        elif (not self.previous_state.x) or (not self.previous_state.y):
+            event = BallOn(self)
+            print("NOTE ON: ", self.color, self.size)
+            dispatcher.send(event)
+
         '''
         Send collisions:
         '''
