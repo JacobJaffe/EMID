@@ -22,7 +22,7 @@ class Board:
         self.current_frame = None
         self.tracked_entities={}
 
-    def update(self, image, frame_number):
+    def update(self, image, frame_number, dispatcher):
         '''
         Tracks and finds balls.
         Updates their locations.
@@ -40,7 +40,7 @@ class Board:
         3) Update entity locations (TOOD: all entities, just balls for now)
         '''
         for color in COLORS:
-            self.masks[color].update(image, frame_number)
+            self.masks[color].update(image, frame_number, dispatcher)
             contours = self.masks[color].get_contours()
 
             # TODO: This can now be accessed through masks

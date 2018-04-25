@@ -31,7 +31,7 @@ board = Board()
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
 cv2.createTrackbar("Exposure", "Trackbars",
-                   150,
+                   exposure_range[0],
                    exposure_range[1], set_exposure)
 
 while(True):
@@ -59,7 +59,7 @@ while(True):
             warp = imutils.resize(warp, width=frame_w)
         frame_projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
 
-    board.update(frame_projection, frame_number)
+    board.update(frame_projection, frame_number, dispatcher)
     board.send_events(dispatcher)
 
     mask, drawn_img = board.display(True, True)

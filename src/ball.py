@@ -1,7 +1,7 @@
 from entity import Entity
 import numpy as np
 from constants import *
-from events import BallCollision
+from events import *
 
 class Ball(Entity):
     def __init__(self, color, radius, size):
@@ -47,17 +47,11 @@ class Ball(Entity):
         '''
         TODO: send on, off, bend pitch
         '''
-
-        #TODO: make this smarter so it dosnt send too many
-        if (not self.current_state.x) or (not self.current_state.y):
-            event = BallOff(self)
-            print("NOTE OFF: ", self.color, self.size)
-            dispatcher.send(event)
-
-        elif (not self.previous_state.x) or (not self.previous_state.y):
-            event = BallOn(self)
-            print("NOTE ON: ", self.color, self.size)
-            dispatcher.send(event)
+        if (not self.previous_state or not self.previous_state.x):
+            if (self.current_state and self.current_state.x):
+                event = BallOn(self)
+                print("NOTE ON: ", self.color, self.size)
+                dispatcher.send(event)
 
         '''
         Send collisions:

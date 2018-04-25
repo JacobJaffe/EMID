@@ -2,6 +2,7 @@ from constants import *
 import cv2
 import numpy as np
 from ball import Ball
+from events import *
 
 class Mask(object):
     ''' Mask:
@@ -39,7 +40,7 @@ class Mask(object):
         mask = cv2.dilate(mask, None, iterations=3)
         self.mask = mask
 
-    def update(self, image, frame_number):
+    def update(self, image, frame_number, dispatcher):
         self._update_mask(image)
         self.frame_number = frame_number
         ''' Update locations of all balls found by mask '''
@@ -55,6 +56,14 @@ class Mask(object):
             if (ball.current_state.frame_number):
                 if (frame_number - ball.current_state.frame_number) > 3:
                     ball.reset()
+
+                    #TODO: move logic
+                    if (not ball.current_state or not ball.current_state.x):
+                        event = BallOff(ball)
+                        if (ball.previous_state and ball.previous_state.x):
+                            print("(REAL?) NOTE OFF: ", ball.color, ball.size)
+                        dispatcher.send(event)
+
 
     def get_contours(self):
         ''' Returns balls of a given color determined by mask '''
