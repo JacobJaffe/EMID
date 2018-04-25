@@ -31,7 +31,7 @@ board = Board()
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
 cv2.createTrackbar("Exposure", "Trackbars",
-                   exposure_range[0],
+                   150,
                    exposure_range[1], set_exposure)
 
 while(True):
