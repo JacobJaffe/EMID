@@ -27,7 +27,11 @@ class BallMove(Event):
 
     def as_osc_message(self):
         address = '/' + str(self.channel)
-        message = [self.ball.size, PITCHBEND, self.ball.current_state.x, self.ball.current_state.y, self.ball.current_state.dx, self.ball.current_state.dy]
+        (x, y) = self.ball.current_state.get_location()
+        x = x/XMAX * 100
+        y = y/YMAX * 100
+        message = [self.ball.size, PITCH_BEND, x, y, self.ball.current_state.dx, self.ball.current_state.dy]
+        # message[0] = 1 # For testing purposes
         return address, message
 
 class BallOff(Event):
@@ -38,6 +42,7 @@ class BallOff(Event):
     def as_osc_message(self):
         address = '/' + str(self.channel)
         message = [self.ball.size, NOTE_OFF, 0, 0, 0, 0]
+        # message[0] = 1 # For testing purposes
         return address, message
 
 class BallOn(Event):
@@ -52,4 +57,5 @@ class BallOn(Event):
         if (self.ball.current_state.dx and self.ball.current_state.dy):
             dx, dy = self.ball.current_state.dx, self.ball.current_state.dy
         message = [self.ball.size, NOTE_ON, self.ball.current_state.x, self.ball.current_state.y, dx, dy]
+        # message[0] = 1 # For testing purposes
         return address, message

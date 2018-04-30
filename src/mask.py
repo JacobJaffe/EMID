@@ -47,7 +47,7 @@ class Mask(object):
 
         # of form ((x, y), radius)
         detected_circles = list(map(cv2.minEnclosingCircle, self.get_contours()))
-        self._update_balls(detected_circles)
+        self._update_balls(detected_circles, frame_number)
 
         ''' Reset balls that have been hanging aroud for too long '''
         # TODO: figure out a frame reset period
@@ -95,20 +95,22 @@ class Mask(object):
         return distances
 
     # for now, only assume one ball
-    def _update_balls(self, detected_circles):
+    def _update_balls(self, detected_circles, frame_number):
 
         # filter out small circles
         filtered_circles = list(filter(lambda params:
-                                            params[1] < 0.5*self.radicies[0]
+                                            params[1] > 0.5*self.radicies[0]
                                        , detected_circles))
 
         # sort the circles
         sorted_circles = sorted(filtered_circles, key=lambda x: x[1], reverse=True)
 
+        if not sorted_circles:
+            return
 
         best_circle = None
         # if ball is on the board, then match by radius AND location
-        if self.balls[0].current_state.exists():
+        if (self.balls[0].current_state and self.balls[0].current_state.x):
             (prev_x, prev_y) = self.balls[0].current_state.get_location()
 
             closest_distance = np.infty

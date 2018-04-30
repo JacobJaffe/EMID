@@ -19,9 +19,10 @@ class Ball(Entity):
     def _distance_from_ball(self, ball):
         return np.linalg.norm(self.get_location() - ball.get_location())
 
-    def _distance_from_point(self, (x, y)):
-        point = np.array((x,y))
-        return np.linalg.norm(self.get_location - point)
+    def _distance_from_point(self, point):
+
+        point = np.array(point)
+        return np.linalg.norm(self.get_location() - point)
 
     def check_and_set_collision_with_ball(self, ball):
         # gotta exist

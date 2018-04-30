@@ -4,7 +4,7 @@ COLORS = [BLUE, GREEN, RED] # TODO: , YELLOW, RED]
 
 GREEN_HSV = {'lower': (65,60,60), 'upper': (80,255,255)}
 BLUE_HSV = {'lower': (102, 93, 72), 'upper': (119, 255, 255)}
-RED_HSV = {'lower': (0, 70, 50), 'upper': (10, 255, 255)}
+RED_HSV = {'lower': (0, 78, 155), 'upper': (248, 255, 255)}
 YELLOW_HSV = {'lower': (0, 0, 0), 'upper': (0, 0, 0)}
 
 BLUE_BGR = (255, 0, 0)
@@ -30,7 +30,11 @@ BALL_MEDIUM = 1
 BALL_SMALL = 0
 
 ''' Misc '''
+# RADICIES = [20.] # TODO: make multiple work!
 RADICIES = [20.] # TODO: make multiple work!
+
 COLLIDE_SPACER = 0
 DISPLAY_SIZE = [600, 600]
 EXPOSURE = 2000
+XMAX = 500.0
+YMAX = 500.0
