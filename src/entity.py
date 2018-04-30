@@ -49,6 +49,9 @@ class EntityState():
         self.frame_number = None
         self.in_collision = False
 
+    def exisits(self):
+        return self.x is not None
+
 
 class Entity(ABC):
 

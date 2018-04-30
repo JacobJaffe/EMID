@@ -30,7 +30,7 @@ BALL_MEDIUM = 1
 BALL_SMALL = 0
 
 ''' Misc '''
-RADICIES = [7., 14., 20.]
+RADICIES = [20.] # TODO: make multiple work!
 COLLIDE_SPACER = 0
 DISPLAY_SIZE = [600, 600]
 EXPOSURE = 2000

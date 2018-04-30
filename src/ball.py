@@ -19,6 +19,10 @@ class Ball(Entity):
     def _distance_from_ball(self, ball):
         return np.linalg.norm(self.get_location() - ball.get_location())
 
+    def _distance_from_point(self, (x, y)):
+        point = np.array((x,y))
+        return np.linalg.norm(self.get_location - point)
+
     def check_and_set_collision_with_ball(self, ball):
         # gotta exist
         if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
@@ -43,6 +47,12 @@ class Ball(Entity):
         '''
         Sends pitch bend events, Note on events, note off events, and collision events
         '''
+
+        if (self.previous_state and self.previous_state.x):
+            if (self.current_state and self.current_state.x):
+                event = BallMove(self)
+                print("BALL MOVE: ", self.color, self.size)
+                dispatcher.send(event)
 
         '''
         TODO: send on, off, bend pitch
