@@ -29,14 +29,23 @@ class Ball(Entity):
         if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
             return False
         # gotta be around for a little
-        if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
-            return False
+        # if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
+        #     return False
+
 
         dist = self._distance_from_ball(ball)
+        # # Make sure self-collision errors don't happen
+        # if dist < self.radius/4:
+        #     return False
         if (self.radius + ball.radius) >= (dist - COLLIDE_SPACER):
             self.current_state.in_collision = True
             return True
         else:
+            if self.current_state.frame_number is None or self.previous_state.frame_number is None:
+                self.current_state.in_collision = False
+                return False
+            if self.current_state.frame_number - self.previous_state.frame_number < 2:
+                return True
             self.current_state.in_collision = False
             return False
 

@@ -29,7 +29,7 @@ class Camera:
         self._corners = [None]*4
 
         # Top left, bottom left, top right, bottom right
-        self._aruco_ids = [0, 4, 5, 9]
+        self._aruco_ids = [1, 3, 0, 2]
 
     def set_exposure(self, exposure):
         self._cap.set(cv2.CAP_PROP_EXPOSURE, 40)

@@ -18,9 +18,9 @@ class EntityState():
 
     def update(self, x, y, frame_number):
         if (self.x):
-            self.dx = np.abs(x-self.x)
+            self.dx = x-self.x
         if (self.y):
-            self.dy = np.abs(y-self.y)
+            self.dy = y-self.y
         self.x = x
         self.y = y
         self.frame_number = frame_number

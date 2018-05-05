@@ -33,7 +33,7 @@ BALL_SMALL = 0
 # RADICIES = [20.] # TODO: make multiple work!
 RADICIES = [20.] # TODO: make multiple work!
 
-COLLIDE_SPACER = 0
+COLLIDE_SPACER = 7.5
 DISPLAY_SIZE = [600, 600]
 EXPOSURE = 2000
 XMAX = 500.0

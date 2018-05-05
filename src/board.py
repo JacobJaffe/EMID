@@ -61,8 +61,8 @@ class Board:
 
                 ''' don't check a ball not updated this frame
                 (it won't colide with anything, but something might colide with it--- that's OK) '''
-                if not ball.current_state.frame_number == frame_number:
-                    continue
+                # if not ball.current_state.frame_number == frame_number:
+                #     continue
 
                 ''' compare to every ball for intersection '''
                 for color2 in COLORS:
