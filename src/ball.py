@@ -27,6 +27,7 @@ class Ball(Entity):
     def check_and_set_collision_with_ball(self, ball):
         # gotta exist
         if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
+            self.current_state.in_collision = False
             return False
         # gotta be around for a little
         # if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
@@ -40,14 +41,9 @@ class Ball(Entity):
         if (self.radius + ball.radius) >= (dist - COLLIDE_SPACER):
             self.current_state.in_collision = True
             return True
-        else:
-            if self.current_state.frame_number is None or self.previous_state.frame_number is None:
-                self.current_state.in_collision = False
-                return False
-            if self.current_state.frame_number - self.previous_state.frame_number < 2:
-                return True
-            self.current_state.in_collision = False
-            return False
+            
+        self.current_state.in_collision = False
+        return False
 
     def is_colliding_with_ball(self, ball):
         if self.radius + ball.radius <= dist - COLLIDE_SPACER:
