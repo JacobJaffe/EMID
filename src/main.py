@@ -26,7 +26,7 @@ dispatcher = Dispatcher(port=PORT)
 
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
-board = Board()
+board = Board(dispatcher)
 
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
@@ -59,8 +59,8 @@ while(True):
             warp = imutils.resize(warp, width=frame_w)
         frame_projection[0:0+warp.shape[0], 0:0+warp.shape[1]] = warp
 
-    board.update(frame_projection, frame_number, dispatcher)
-    board.send_events(dispatcher)
+    board.update(frame_projection, frame_number)
+    board.send_events()
     mask, drawn_img = board.display(True, True)
 
     flip_mask = cv2.flip(cv2.flip( mask, 0 ), 1)

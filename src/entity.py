@@ -83,9 +83,5 @@ class Entity(ABC):
                 and not self.previous_state.in_collision
 
     @abstractmethod
-    def on_collide(self):
-        ...
-
-    @abstractmethod
     def is_colliding_with_ball(self, ball):
         ...
