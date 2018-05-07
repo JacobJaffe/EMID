@@ -5,7 +5,7 @@ COLORS = [BLUE, GREEN, RED, YELLOW]
 GREEN_HSV = {'lower': (65,60,60), 'upper': (90,255,255)}
 BLUE_HSV = {'lower': (102, 60, 72), 'upper': (119, 255, 255)}
 RED_HSV = {'lower': (0, 100, 50), 'upper': (10, 255, 255)}
-YELLOW_HSV = {'lower': (25, 146, 190), 'upper': (62, 174, 250)}
+YELLOW_HSV = {'lower': (20, 100, 100), 'upper': (30, 255, 255)}
 
 BLUE_BGR = (255, 0, 0)
 GREEN_BGR = (0, 255, 0)

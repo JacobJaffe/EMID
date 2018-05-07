@@ -63,9 +63,9 @@ while(True):
     board.send_events(dispatcher)
     mask, drawn_img = board.display(True, True)
 
-    flip_mask = cv2.flip( mask, 1 )
-    flip_drawn_img = cv2.flip( drawn_img, 1 )
-    flip_frame = cv2.flip( frame, 1 )
+    flip_mask = cv2.flip(cv2.flip( mask, 0 ), 1)
+    flip_drawn_img = cv2.flip(cv2.flip( drawn_img, 0 ), 1)
+    flip_frame = cv2.flip(cv2.flip( frame, 0 ), 1)
 
     cv2.imshow("Mask", flip_mask)
     cv2.imshow("Warp", flip_drawn_img)
