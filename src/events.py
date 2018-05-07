@@ -11,8 +11,9 @@ class Event(ABC):
         ...
 
 class BallCollision(Event):
-    def __init__(self, ball):
+    def __init__(self, ball, entity):
         self.ball = ball
+        self.entity = entity
         self.channel = COLOR_CHANNELS[ball.color]
 
     def as_osc_message(self):

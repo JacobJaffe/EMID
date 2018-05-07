@@ -24,13 +24,48 @@ class Board:
         self.width = None
         self.height = None
         self.collisions = None
+        self.balls = None
+
+    def get_balls(self):
+        if self.balls is None:
+            self.balls = [b for m in self.masks.values() for b in m.balls]
+        return self.balls
 
     def set_collisions(self):
         ''' set_collisions(self):
                 updates internal self.collisions matrix
                 rows are balls and columns are entities = balls + sides + shapes
         '''
-        pass
+        # Balls and Sides are immutable, polygons will appear
+        # and disappear. Need to account for this.
+        balls = self.get_balls()
+        ball_ids = [b.id for b in balls]
+        entities = balls + self.sides
+        if self.collisions is None:
+            self.collisions = {}
+            for b : Ball in balls:
+                self.collisions[b.id] = {}
+        for b : Ball in balls:
+            for e: Entity in entities:
+                # if entity not previously found, set to 0
+                if e.id not in self.collisions[b.id]:
+                    self.collisions[b.id][e.id] = 0
+                v = self.collisions[b.id][e.id]
+                if e.is_colliding_with_ball(b):
+                    if v == 0:
+                        v = 1
+                    elif v == 1:
+                        v = 2
+                else:
+                    v = 0
+                self.collisions[b.id][e.id] = v
+
+    def send_collisions(self):
+        for b : Ball in balls:
+            for e : Entity:
+                v = self.collisions[b.id][e.id]
+                if v == 1:
+                    self.dispatcher.send(BallCollision(b,e))
 
     def update(self, image, frame_number):
         '''
@@ -61,40 +96,18 @@ class Board:
         4) send collision messages
         '''
         self.set_collisions()
-        # TODO: create collision matrix
-        # for color in COLORS:
-        #     for ball in self.masks[color].balls:
-        #
-        #         ''' don't check a ball not updated this frame
-        #         (it won't colide with anything, but something might colide with it--- that's OK) '''
-        #         # if not ball.current_state.frame_number == frame_number:
-        #         #     continue
-        #         ''' compare to every side for intersection '''
-        #         # TODO: have this be different for each side?
-        #         isColidingWithSides = ball.check_colliding_sides(self.width, self.height)
-        #         if isColidingWithSides:
-        #             print("SIDE COLLISION: ", color, ball.size)
-        #
-        #
-        #         ''' compare to every ball for intersection '''
-        #         for color2 in COLORS:
-        #             for ball2 in self.masks[color2].balls:
-        #                 # Don't have it check collision with itself (& yay for GUID's)!
-        #                 if ball.id == ball2.id:
-        #                     continue
-        #
-        #                 isColidingWithBall = ball.check_coliding_ball(ball2)
-        #                 if isColidingWithBall:
-        #                     print("COLLISON: ", color, ball.size, "with", color2, ball2.size)
         return
 
     # TODO: we should be sending messages AS SOON as we have information
     # This function will likely be completely eliminated
     def send_events(self):
         # TODO: Send collision events
-        for color in COLORS:
-            for ball in self.masks[color].balls:
-                ball.send_events(self.dispatcher)
+        [self.dispatcher.send(e) for m in self.masks.values()
+                                 for b in m.balls
+                                 for e in b.get_events()]
+        # for color in COLORS:
+        #     for ball in self.masks[color].balls:
+        #         ball.send_events(self.dispatcher)
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
