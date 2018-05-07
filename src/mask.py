@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 from ball import Ball
 from events import *
+from color_mask_constructors import MASK_CONSTRUCTORS
 
 class Mask(object):
     ''' Mask:
@@ -13,8 +14,9 @@ class Mask(object):
     def __init__(self, color, dispatcher):
         self.color = color
         self.dispatcher = dispatcher
-        self.hsv = HSV[color]
+        self.construct_mask = MASK_CONSTRUCTORS[color]
         self.image = None
+        self.mask = None
         radicies = RADICIES.copy()
         self.radicies = radicies
         self.balls = [Ball(color, radius, size)
@@ -24,21 +26,7 @@ class Mask(object):
 
     def _update_mask(self, image):
         ''' creates a mask over a image for a color '''
-
-        ''' resize the frame, blur it, and convert it to the
-            HSV color space'''
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-        ''' construct a mask for the color, then perform a series
-            of dilations and erosions to remove any small blobs
-            left in the mask '''
-        mask = cv2.inRange(hsv, self.hsv['lower'], self.hsv['upper'])
-        if (self.color == RED):
-            mask_wrap = cv2.inRange(hsv, (170, 70, 50), (180, 255, 255))
-            mask = mask | mask_wrap
-
-        mask = cv2.erode(mask, None, iterations=2)
-        mask = cv2.dilate(mask, None, iterations=3)
+        mask = self.construct_mask(image)
         self.mask = mask
 
     def update(self, image, frame_number):
