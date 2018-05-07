@@ -13,7 +13,7 @@ def red_mask(image):
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         ''' select by color '''
-        mask_1 = cv2.inRange(hsv, (0, 150, 150), (11, 255, 255))
+        mask_1 = cv2.inRange(hsv, (0, 150, 150), (5, 255, 255))
 
         # NOTE: the 120 value of saturation lower might need adjusting!
         mask_2 = cv2.inRange(hsv, (170, 120, 150), (180, 255, 255))
@@ -61,7 +61,20 @@ def yellow_mask(image):
             hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
             ''' select by color '''
-            mask = cv2.inRange(hsv, (20, 100, 100), (30, 255, 255))
+            mask = cv2.inRange(hsv, (15, 60, 180), (30, 180, 255))
+
+            ''' remove small blobs, then fill in gaps '''
+            mask = cv2.erode(mask, None, iterations=2)
+            mask = cv2.dilate(mask, None, iterations=3)
+
+            return mask
+
+def orange_mask(image):
+            '''convert it to HSV color space'''
+            hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+            ''' select by color '''
+            mask = cv2.inRange(hsv, (0, 12, 249), (12, 180, 255))
 
             ''' remove small blobs, then fill in gaps '''
             mask = cv2.erode(mask, None, iterations=2)
@@ -72,4 +85,5 @@ def yellow_mask(image):
 MASK_CONSTRUCTORS = {BLUE: blue_mask,
         GREEN: green_mask,
         RED: red_mask,
-        YELLOW: yellow_mask}
+        YELLOW: yellow_mask,
+        ORANGE: orange_mask}
