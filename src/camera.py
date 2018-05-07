@@ -22,8 +22,7 @@ class Camera:
         self._cap.set(cv2.CAP_PROP_SETTINGS,1)
         self._cap.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
         self._cap.set(cv2.CAP_PROP_EXPOSURE, -5)
-        print (self._cap.get(cv2.CAP_PROP_EXPOSURE))
-
+        
         self._dictionary =\
             cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_50)
         self._corners = [None]*4
