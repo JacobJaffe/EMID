@@ -10,8 +10,9 @@ class Mask(object):
             color. Ball tracking is done at this level, as it makes for fewer
             errors.
     '''
-    def __init__(self, color):
+    def __init__(self, color, dispatcher):
         self.color = color
+        self.dispatcher = dispatcher
         self.hsv = HSV[color]
         self.image = None
         radicies = RADICIES.copy()
@@ -40,7 +41,7 @@ class Mask(object):
         mask = cv2.dilate(mask, None, iterations=3)
         self.mask = mask
 
-    def update(self, image, frame_number, dispatcher):
+    def update(self, image, frame_number):
         self._update_mask(image)
         self.frame_number = frame_number
         ''' Update locations of all balls found by mask '''
@@ -61,8 +62,7 @@ class Mask(object):
                         event = BallOff(ball)
                         if (ball.previous_state and ball.previous_state.x):
                             print("(REAL?) NOTE OFF: ", ball.color, ball.size)
-                        dispatcher.send(event)
-
+                        self.dispatcher.send(event)
 
     def get_contours(self):
         ''' Returns balls of a given color determined by mask '''

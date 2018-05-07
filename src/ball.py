@@ -13,6 +13,9 @@ class Ball(Entity):
         # this will be the actual radius detected
         self.radius = radius
 
+    def get_location(self):
+        return self.current_state.get_location()
+        
     def on_collide(self):
         print('ball on collide {0}'.format(self.id))
 
