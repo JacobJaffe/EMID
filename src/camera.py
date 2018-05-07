@@ -90,8 +90,10 @@ class Camera:
                 # draw pink circles on the 4 corners
                 cv2.circle(frame_labled, (int(x), int(y)), 5, (255, 0, 255), -1)
                 centers.append([x, y])
+
+            offset = np.absolute(self._corners[0]._corners[0][0] - centers[0][0])
             centers = np.array(centers)
-            warp = four_point_transform(frame, centers)
+            warp = four_point_transform(frame, centers, offset)
         return frame_labled, warp
 
     def close(self):

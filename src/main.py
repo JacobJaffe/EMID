@@ -61,11 +61,15 @@ while(True):
 
     board.update(frame_projection, frame_number, dispatcher)
     board.send_events(dispatcher)
-
     mask, drawn_img = board.display(True, True)
-    cv2.imshow("Mask", mask)
-    cv2.imshow("Warp", drawn_img)
-    cv2.imshow("Image", frame)
+
+    flip_mask = cv2.flip( mask, 1 )
+    flip_drawn_img = cv2.flip( drawn_img, 1 )
+    flip_frame = cv2.flip( frame, 1 )
+
+    cv2.imshow("Mask", flip_mask)
+    cv2.imshow("Warp", flip_drawn_img)
+    cv2.imshow("Image", flip_frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

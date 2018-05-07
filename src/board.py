@@ -21,14 +21,19 @@ class Board:
         self.image = None
         self.current_frame = None
         self.tracked_entities={}
+        self.width = None
+        self.height = None
 
     def update(self, image, frame_number, dispatcher):
+
         '''
         Tracks and finds balls.
         Updates their locations.
-        Doesn't check collisions.
+        Checks collisions.
         Assumes that the corners of image are the corners of the board.
         '''
+
+        self.width, self.height = image.shape[:2]
 
         self.image = image
         self.current_frame = frame_number
@@ -50,12 +55,6 @@ class Board:
         After updating each entity:
         4) update collisions of each ball
         '''
-        # Yes, this is a 4-deep for-loop. This will be only num_colors * num_sizes ^2 checks though, which should only be 12 ^2
-        # TODO: we can double performance easily by dynamically programming, and not checking across the diagonal
-        # TODO: we can optimize this a lot in smart ways also, by keeping a notion of balls on the board, and only iterating over those.
-        # TODO: we can optimize this a TON by implementing a line sweep algorithm to compute this in only nlogn time
-            # -> line sweep assuming rectangles, then check for the radius intersection if its in it.
-            # this would actaully have 9 * log(n) worse complexity, as we only check the balls against the augmented sweep tree.
         for color in COLORS:
             for ball in self.masks[color].balls:
 
@@ -63,6 +62,12 @@ class Board:
                 (it won't colide with anything, but something might colide with it--- that's OK) '''
                 # if not ball.current_state.frame_number == frame_number:
                 #     continue
+                ''' compare to every side for intersection '''
+                # TODO: have this be different for each side?
+                isColidingWithSides = ball.check_colliding_sides(self.width, self.height)
+                if isColidingWithSides:
+                    print("SIDE COLLISION: ", color, ball.size)
+
 
                 ''' compare to every ball for intersection '''
                 for color2 in COLORS:
@@ -71,9 +76,8 @@ class Board:
                         if ball.id == ball2.id:
                             continue
 
-                        # TODO: ensure this happens by reference, otherwise state is not updated
-                        collided = ball.check_and_set_collision_with_ball(ball2)
-                        if (collided == True):
+                        isColidingWithBall = ball.check_coliding_ball(ball2)
+                        if isColidingWithBall:
                             print("COLLISON: ", color, ball.size, "with", color2, ball2.size)
         return
 

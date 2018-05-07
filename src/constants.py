@@ -1,11 +1,11 @@
 ''' Colors and shit '''
 BLUE, GREEN, YELLOW, RED = 'blue', 'green', 'yellow', 'red'
-COLORS = [BLUE, GREEN, RED] # TODO: , YELLOW, RED]
+COLORS = [BLUE, GREEN, RED, YELLOW]
 
-GREEN_HSV = {'lower': (65,60,60), 'upper': (80,255,255)}
-BLUE_HSV = {'lower': (102, 93, 72), 'upper': (119, 255, 255)}
-RED_HSV = {'lower': (0, 78, 155), 'upper': (248, 255, 255)}
-YELLOW_HSV = {'lower': (0, 0, 0), 'upper': (0, 0, 0)}
+GREEN_HSV = {'lower': (65,60,60), 'upper': (90,255,255)}
+BLUE_HSV = {'lower': (102, 60, 72), 'upper': (119, 255, 255)}
+RED_HSV = {'lower': (0, 100, 50), 'upper': (10, 255, 255)}
+YELLOW_HSV = {'lower': (25, 146, 190), 'upper': (62, 174, 250)}
 
 BLUE_BGR = (255, 0, 0)
 GREEN_BGR = (0, 255, 0)
@@ -23,7 +23,7 @@ HSV = {BLUE: BLUE_HSV,
         YELLOW: YELLOW_HSV}
 
 ''' MIDI API Shit, for MAX'''
-COLOR_CHANNELS = {BLUE: 1, GREEN: 2, RED: 3}
+COLOR_CHANNELS = {BLUE: 1, GREEN: 2, RED: 3, YELLOW: 4}
 NOTE_ON, NOTE_OFF, PITCH_BEND, COLLISION = 1, 2, 3, 4
 BALL_LARGE = 2
 BALL_MEDIUM = 1

@@ -24,7 +24,21 @@ class Ball(Entity):
         point = np.array(point)
         return np.linalg.norm(self.get_location() - point)
 
-    def check_and_set_collision_with_ball(self, ball):
+    def check_colliding_sides(self, width, height):
+        if (not self.current_state.x) or (not self.current_state.y):
+            self.current_state.isColdingSides = [False, False, False]
+            return False
+
+        else:
+            coliding_left = self.current_state.x - self.radius < COLLIDE_SPACER
+            coliding_right = self.current_state.x + self.radius > width - COLLIDE_SPACER
+            coliding_top = self.current_state.x + self.radius > height - COLLIDE_SPACER
+
+            self.current_state.isColdingSides = [coliding_left, coliding_right, coliding_top]
+
+            return coliding_left or coliding_right or coliding_top
+
+    def check_coliding_ball(self, ball):
         # gotta exist
         if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
             return False

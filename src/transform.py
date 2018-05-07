@@ -25,7 +25,7 @@ def order_points(pts):
 	# return the ordered coordinates
 	return rect
 
-def four_point_transform(image, pts):
+def four_point_transform(image, pts, offset):
 	# obtain a consistent order of the points and unpack them
 	# individually
 	rect = order_points(pts)
@@ -51,10 +51,10 @@ def four_point_transform(image, pts):
 	# in the top-left, top-right, bottom-right, and bottom-left
 	# order
 	dst = np.array([
-		[0, 0],
-		[maxWidth - 1, 0],
-		[maxWidth - 1, maxHeight - 1],
-		[0, maxHeight - 1]], dtype = "float32")
+		[offset, offset],
+		[maxWidth - offset, offset],
+		[maxWidth - offset, maxHeight - offset],
+		[offset, maxHeight - offset]], dtype = "float32")
 
 	# compute the perspective transform matrix and then apply it
 	M = cv2.getPerspectiveTransform(rect, dst)

@@ -14,7 +14,12 @@ class EntityState():
         self.dx = None
         self.dy = None
         self.frame_number = frame_number
+
+        # legacy, we should migrate this
         self.in_collision = False
+
+        # better way for us to do this
+        self.isColdingSides = [False, False, False]
 
     def update(self, x, y, frame_number):
         if (self.x):

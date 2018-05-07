@@ -32,9 +32,9 @@ class Mask(object):
             of dilations and erosions to remove any small blobs
             left in the mask '''
         mask = cv2.inRange(hsv, self.hsv['lower'], self.hsv['upper'])
-        # TODO: Scalar is undefined?
-        # if (color == RED):
-        #     mask = mask | cv2.inRange(hsv, Scalar(170, 70, 50), Scalar(180, 255, 255));
+        if (self.color == RED):
+            mask_wrap = cv2.inRange(hsv, (170, 70, 50), (180, 255, 255))
+            mask = mask | mask_wrap
 
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=3)
