@@ -32,7 +32,7 @@ cam = Camera(int(sys.argv[1]))
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('127.0.0.1', INPORT))
 # Set up our udp client for sending to Max
-board = Board(dispatcher=Dispatcher(port=PORT, sock=sock))
+board = Board(dispatcher=Dispatcher(port=PORT, inport=INPORT, sock=sock))
 
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
