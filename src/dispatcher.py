@@ -13,6 +13,7 @@ class Dispatcher:
         self.sock = sock
         self.messages = Queue()
         self.server = Process(target=self.recieve, args=(self,))
+        self.server.start()
         #self.recieve.remote(self)
 
 #    @ray.remote
