@@ -1,13 +1,27 @@
-from pythonosc import udp_client, osc_message_builder, osc_bundle_builder
 from events import Event
+from pythonosc import udp_client, osc_message_builder, osc_bundle_builder
+import ray
+import socket
 
 class Dispatcher:
     def __init__(self, port, address='127.0.0.1'):
         self.PORT = port
+        self.INPORT = port + 1
         self.address = address
         self.client = udp_client.SimpleUDPClient(address, port)
+        ray.init()
+        self.messages = []
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.bind((address, self.INPORT))
+        self.recieve.remote()
 
-    def send(self, event : Event):
+    @ray.remote
+    def recieve(self):
+        while True:
+            data, addr = self.sock.recvfrom(self.INPORT)
+            print("Recieved message: ", data)
+
+    def send(self, event):
         ''' Sends OSC message according to definition of event.
             Note that event.as_osc_message() returns
              2 arguments: address, and message.

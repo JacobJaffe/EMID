@@ -1,10 +1,11 @@
 from ball import Ball
 from mask import Mask
 from entity import Entity
-import cv2
-import numpy as np
 from constants import *
 from events import *
+import cv2
+import numpy as np
+import socket
 
 
 class Board:
@@ -22,7 +23,6 @@ class Board:
         self.contours = {}
         self.image = None
         self.current_frame = None
-        self.tracked_entities={}
         self.width = None
         self.height = None
 
