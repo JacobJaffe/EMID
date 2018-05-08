@@ -1,5 +1,6 @@
 from events import Event
 from pythonosc import udp_client, osc_message_builder, osc_bundle_builder
+from multiprocessing import Process, Queue
 import ray
 import socket
 
@@ -9,15 +10,16 @@ class Dispatcher:
         self.INPORT = port + 1
         self.address = address
         self.client = udp_client.SimpleUDPClient(address, port)
-        self.messages = []
         self.sock = sock
+        self.messages = Queue()
+        self.server = Process(target=recieve, args=(self,))
         #self.recieve.remote(self)
 
 #    @ray.remote
-#    def recieve(self):
-#        while True:
-#            data, addr = self.sock.recvfrom(self.INPORT)
-#            print("Recieved message: ", data)
+    def recieve(self):
+        while True:
+            data, addr = self.sock.recvfrom(self.INPORT)
+            print("Recieved message: ", data)
 
     def send(self, event):
         ''' Sends OSC message according to definition of event.
