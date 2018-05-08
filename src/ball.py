@@ -3,13 +3,12 @@ import numpy as np
 from constants import *
 from events import *
 
+
 class Ball(Entity):
     def __init__(self, color, radius, size):
         Entity.__init__(self, color, frame_number=None)
-
         # NOTE: This will be a number 0, 1, 2 based on ball size
         self.size = size
-
         # this will be the actual radius detected
         self.radius = radius
 
@@ -45,8 +44,6 @@ class Ball(Entity):
         # gotta be around for a little
         # if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
         #     return False
-
-
         dist = self._distance_from_ball(ball)
         # # Make sure self-collision errors don't happen
         # if dist < self.radius/4:

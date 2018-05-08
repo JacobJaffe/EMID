@@ -49,6 +49,7 @@ class Mask(object):
         detected_circles = list(map(cv2.minEnclosingCircle, self.get_contours()))
         self._update_balls(detected_circles, frame_number)
 
+    # TODO: vestigal code, remove
     def send_events(dispatcher):
         ''' Reset balls that have been hanging aroud for too long '''
         # TODO: figure out a frame reset period
