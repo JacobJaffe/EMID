@@ -4,6 +4,7 @@ from entity import Entity
 from side import Side
 import cv2
 import numpy as np
+from events import *
 from constants import *
 
 
@@ -27,9 +28,7 @@ class Board:
         self.balls = None
 
     def get_balls(self):
-        if self.balls is None:
-            self.balls = [b for m in self.masks.values() for b in m.balls]
-        return self.balls
+        return [b for m in self.masks.values() for b in m.balls]
 
     def set_collisions(self):
         ''' set_collisions(self):
@@ -43,10 +42,10 @@ class Board:
         entities = balls + self.sides
         if self.collisions is None:
             self.collisions = {}
-            for b : Ball in balls:
+            for b in balls:
                 self.collisions[b.id] = {}
-        for b : Ball in balls:
-            for e: Entity in entities:
+        for b in balls:
+            for e in entities:
                 # if entity not previously found, set to 0
                 if e.id not in self.collisions[b.id]:
                     self.collisions[b.id][e.id] = 0
@@ -61,11 +60,18 @@ class Board:
                 self.collisions[b.id][e.id] = v
 
     def send_collisions(self):
-        for b : Ball in balls:
-            for e : Entity:
+        balls = self.get_balls()
+        entities = balls + self.sides
+        for b in balls:
+            for e in entities:
                 v = self.collisions[b.id][e.id]
                 if v == 1:
+                    try:
+                        print("COLLISON: ", b.color, b.size, "with", e.color, e.size)
+                    except:
+                        continue
                     self.dispatcher.send(BallCollision(b,e))
+                    self.dispatcher.send(BallCollision(e,b))
 
     def update(self, image, frame_number):
         '''
@@ -105,6 +111,7 @@ class Board:
         [self.dispatcher.send(e) for m in self.masks.values()
                                  for b in m.balls
                                  for e in b.get_events()]
+        self.send_collisions()
         # for color in COLORS:
         #     for ball in self.masks[color].balls:
         #         ball.send_events(self.dispatcher)

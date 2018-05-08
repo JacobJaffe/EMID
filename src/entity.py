@@ -54,7 +54,7 @@ class EntityState():
         self.frame_number = None
         self.in_collision = False
 
-    def exisits(self):
+    def exists(self):
         return self.x is not None
 
 
@@ -81,6 +81,9 @@ class Entity(ABC):
     def is_in_new_collision(self):
         return self.current_state.in_collision\
                 and not self.previous_state.in_collision
+
+    def exists(self):
+        return self.current_state.exists()
 
     @abstractmethod
     def is_colliding_with_ball(self, ball):

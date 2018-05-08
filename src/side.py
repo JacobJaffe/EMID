@@ -14,6 +14,8 @@ class Side(Entity):
         self.width = width
 
     def is_colliding_with_ball(self, ball):
+        if not ball.exists():
+            return False
         x, y = ball.get_location()
         r = ball.radius
         if self.name == 'top':
