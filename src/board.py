@@ -108,5 +108,5 @@ class Board:
                     size = ball.size;
                     cv2.circle(img, c, r, BGR[color], 2)
                     cv2.circle(img, c, 5, (255, 0, 255), -1)
-                    cv2.putText(img, color + ' ' + str(size), (c[0] + 5 + r, c[1] + 5 + r), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                    # cv2.putText(img, color + ' ' + str(size), (c[0] + 5 + r, c[1] + 5 + r), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
         return combined_mask, img
