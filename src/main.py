@@ -6,6 +6,7 @@ from collections import deque
 import argparse
 import imutils
 import ray
+import socket
 from camera import Camera
 from dispatcher import Dispatcher
 from board import Board
@@ -19,6 +20,7 @@ def set_exposure(x):
 set_exposure(100)
 # This port means 'EMID'
 PORT = 3649
+INPORT = 3650
 
 PROJECTION_SIZE = [600, 600]
 
@@ -27,8 +29,10 @@ ray.init()
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(('127.0.0.1', INPORT))
 # Set up our udp client for sending to Max
-board = Board(dispatcher=Dispatcher(port=PORT))
+board = Board(dispatcher=Dispatcher(port=PORT, sock=sock))
 
 frame_number = 0
 cv2.namedWindow("Trackbars", 0)
