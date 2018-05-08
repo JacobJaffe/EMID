@@ -13,8 +13,10 @@ class Ball(Entity):
         # this will be the actual radius detected
         self.radius = radius
 
-    def on_collide(self):
-        print('ball on collide {0}'.format(self.id))
+        self.spacer = COLLIDE_SPACER
+
+    def get_location(self):
+        return self.current_state.get_location()
 
     def _distance_from_ball(self, ball):
         return np.linalg.norm(self.get_location() - ball.get_location())
@@ -24,48 +26,26 @@ class Ball(Entity):
         point = np.array(point)
         return np.linalg.norm(self.get_location() - point)
 
-    def check_colliding_sides(self, width, height):
-        if (not self.current_state.x) or (not self.current_state.y):
-            self.current_state.isColdingSides = [False, False, False]
-            return False
-
-        else:
-            coliding_left = self.current_state.x - self.radius < COLLIDE_SPACER
-            coliding_right = self.current_state.x + self.radius > width - COLLIDE_SPACER
-            coliding_top = self.current_state.x + self.radius > height - COLLIDE_SPACER
-
-            self.current_state.isColdingSides = [coliding_left, coliding_right, coliding_top]
-
-            return coliding_left or coliding_right or coliding_top
-
-    def check_coliding_ball(self, ball):
+    def is_colliding_with_ball(self, ball):
         # gotta exist
         if (not self.current_state.x) or (not self.current_state.y) or (not ball.current_state.x) or (not ball.current_state.y):
             return False
         # gotta be around for a little
-        # if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
-        #     return False
-
+        if (not self.previous_state.x) or (not self.previous_state.y) or (not ball.previous_state.x) or (not ball.previous_state.y):
+            return False
 
         dist = self._distance_from_ball(ball)
-        # # Make sure self-collision errors don't happen
+        # Make sure self-collision errors don't happen
         # if dist < self.radius/4:
         #     return False
-        if (self.radius + ball.radius) >= (dist - COLLIDE_SPACER):
-            self.current_state.in_collision = True
+        if (self.radius + ball.radius + self.spacer) >= dist:
             return True
         else:
             if self.current_state.frame_number is None or self.previous_state.frame_number is None:
-                self.current_state.in_collision = False
                 return False
             if self.current_state.frame_number - self.previous_state.frame_number < 2:
                 return True
-            self.current_state.in_collision = False
             return False
-
-    def is_colliding_with_ball(self, ball):
-        if self.radius + ball.radius <= dist - COLLIDE_SPACER:
-            return True
 
     def send_events(self, dispatcher):
         '''
@@ -87,9 +67,17 @@ class Ball(Entity):
                 print("NOTE ON: ", self.color, self.size)
                 dispatcher.send(event)
 
+    def get_events(self):
         '''
-        Send collisions:
+        Sends pitch bend events, Note on events, note off events, and collision events
         '''
-        if (self.current_state.in_collision):
-            event = BallCollision(self)
-            dispatcher.send(event)
+        if (self.previous_state and self.previous_state.x):
+            if (self.current_state and self.current_state.x):
+                yield BallMove(self)
+
+        '''
+        TODO: send on, off, bend pitch
+        '''
+        if (not self.previous_state or not self.previous_state.x):
+            if (self.current_state and self.current_state.x):
+                yield BallOn(self)
