@@ -97,7 +97,7 @@ class Board:
                             print("(REAL?) NOTE OFF: ", ball.color, ball.size)
                         self.dispatcher.send(event)
 
-        ''' send note on and collisions '''
+        ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(self.dispatcher)

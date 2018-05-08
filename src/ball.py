@@ -19,7 +19,6 @@ class Ball(Entity):
         return np.linalg.norm(self.get_location() - ball.get_location())
 
     def _distance_from_point(self, point):
-
         point = np.array(point)
         return np.linalg.norm(self.get_location() - point)
 
