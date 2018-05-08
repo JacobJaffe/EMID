@@ -83,6 +83,20 @@ class Board:
         return
 
     def send_events(self):
+        ''' reset entities send note offs (previously done in mask) '''
+        for m in self.masks.values():
+            for b in m.balls:
+                if b.current_state.frame_number is None:
+                    continue
+                if self.current_frame - b.current_state.frame_number > 3:
+                    b.reset()
+                    if not b.current_state or not ball.current_state.x:
+                        event = BallOff(b)
+                        if b.previous_state and b.previous_state.x:
+                            print("(REAL?) NOTE OFF: ", ball.color, ball.size)
+                        self.dispatcher.send(event)
+
+        ''' send note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(self.dispatcher)

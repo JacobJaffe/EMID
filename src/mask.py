@@ -40,7 +40,7 @@ class Mask(object):
         mask = cv2.dilate(mask, None, iterations=3)
         self.mask = mask
 
-    def update(self, image, frame_number, dispatcher):
+    def update(self, image, frame_number):
         self._update_mask(image)
         self.frame_number = frame_number
         ''' Update locations of all balls found by mask '''
@@ -49,6 +49,7 @@ class Mask(object):
         detected_circles = list(map(cv2.minEnclosingCircle, self.get_contours()))
         self._update_balls(detected_circles, frame_number)
 
+    def send_events(dispatcher):
         ''' Reset balls that have been hanging aroud for too long '''
         # TODO: figure out a frame reset period
         for ball in self.balls:
@@ -62,7 +63,6 @@ class Mask(object):
                         if (ball.previous_state and ball.previous_state.x):
                             print("(REAL?) NOTE OFF: ", ball.color, ball.size)
                         dispatcher.send(event)
-
 
     def get_contours(self):
         ''' Returns balls of a given color determined by mask '''
