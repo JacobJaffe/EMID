@@ -51,17 +51,13 @@ class Ball(Entity):
         # # Make sure self-collision errors don't happen
         # if dist < self.radius/4:
         #     return False
-        if (self.radius + ball.radius) >= (dist - COLLIDE_SPACER):
+        if (self.radius + ball.radius) * COLLIDE_THRESH >= (dist):
             self.current_state.in_collision = True
+            print("DISTANCE: ", dist)
             return True
-        else:
-            if self.current_state.frame_number is None or self.previous_state.frame_number is None:
-                self.current_state.in_collision = False
-                return False
-            if self.current_state.frame_number - self.previous_state.frame_number < 2:
-                return True
-            self.current_state.in_collision = False
-            return False
+
+        self.current_state.in_collision = False
+        return False
 
     def is_colliding_with_ball(self, ball):
         if self.radius + ball.radius <= dist - COLLIDE_SPACER:
