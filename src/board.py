@@ -4,6 +4,7 @@ from entity import Entity
 import cv2
 import numpy as np
 from constants import *
+from events import *
 
 
 class Board:
@@ -46,7 +47,7 @@ class Board:
         3) Update entity locations (TOOD: all entities, just balls for now)
         '''
         for color in COLORS:
-            self.masks[color].update(image, frame_number, self.dispatcher)
+            self.masks[color].update(image, frame_number)
             contours = self.masks[color].get_contours()
 
             # TODO: This can now be accessed through masks
