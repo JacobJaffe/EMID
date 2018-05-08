@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from ball import Ball
 from events import *
-from color_mask_constructors import MASK_CONSTRUCTORS
+from color_mask_constructor import MASK_CONSTRUCTORS
 
 class Mask(object):
     ''' Mask:
@@ -14,9 +14,9 @@ class Mask(object):
     def __init__(self, color, dispatcher):
         self.color = color
         self.dispatcher = dispatcher
-        self.construct_mask = MASK_CONSTRUCTORS[color]
         self.image = None
         self.mask = None
+        self.construct_mask = MASK_CONSTRUCTORS[color]
         radicies = RADICIES.copy()
         self.radicies = radicies
         self.balls = [Ball(color, radius, size)
