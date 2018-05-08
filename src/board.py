@@ -12,7 +12,8 @@ class Board:
         keeps track of balls on the board and is responsible for
         detecting collisions and sending events to the dispatcher
     '''
-    def __init__(self):
+    def __init__(self, dispatcher):
+        self.dispatcher = dispatcher
         self.masks = {c: Mask(c) for c in COLORS}
         self.entities = []
         self.sides = []
@@ -24,7 +25,7 @@ class Board:
         self.width = None
         self.height = None
 
-    def update(self, image, frame_number, dispatcher):
+    def update(self, image, frame_number):
 
         '''
         Tracks and finds balls.
@@ -45,7 +46,7 @@ class Board:
         3) Update entity locations (TOOD: all entities, just balls for now)
         '''
         for color in COLORS:
-            self.masks[color].update(image, frame_number, dispatcher)
+            self.masks[color].update(image, frame_number, self.dispatcher)
             contours = self.masks[color].get_contours()
 
             # TODO: This can now be accessed through masks
@@ -81,10 +82,10 @@ class Board:
                             print("COLLISON: ", color, ball.size, "with", color2, ball2.size)
         return
 
-    def send_events(self, dispatcher):
+    def send_events(self):
         for color in COLORS:
             for ball in self.masks[color].balls:
-                ball.send_events(dispatcher)
+                ball.send_events(self.dispatcher)
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
