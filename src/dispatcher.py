@@ -11,13 +11,13 @@ class Dispatcher:
         self.client = udp_client.SimpleUDPClient(address, port)
         self.messages = []
         self.sock = sock
-        self.recieve.remote(self)
+        #self.recieve.remote(self)
 
-    @ray.remote
-    def recieve(self):
-        while True:
-            data, addr = self.sock.recvfrom(self.INPORT)
-            print("Recieved message: ", data)
+#    @ray.remote
+#    def recieve(self):
+#        while True:
+#            data, addr = self.sock.recvfrom(self.INPORT)
+#            print("Recieved message: ", data)
 
     def send(self, event):
         ''' Sends OSC message according to definition of event.

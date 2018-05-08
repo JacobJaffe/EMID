@@ -24,7 +24,7 @@ INPORT = 3650
 
 PROJECTION_SIZE = [600, 600]
 
-ray.init()
+#ray.init()
 
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
