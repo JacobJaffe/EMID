@@ -9,11 +9,10 @@ class Dispatcher:
         self.INPORT = port + 1
         self.address = address
         self.client = udp_client.SimpleUDPClient(address, port)
-        ray.init()
         self.messages = []
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((address, self.INPORT))
-        self.recieve.remote()
+        self.recieve.remote(self)
 
     @ray.remote
     def recieve(self):

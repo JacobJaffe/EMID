@@ -5,7 +5,6 @@ from constants import *
 from events import *
 import cv2
 import numpy as np
-import socket
 
 
 class Board:

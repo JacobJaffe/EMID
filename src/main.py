@@ -1,12 +1,13 @@
 # Import packages
-from camera import Camera
 import cv2
 import numpy as np
 import sys
-from dispatcher import Dispatcher
 from collections import deque
 import argparse
 import imutils
+import ray
+from camera import Camera
+from dispatcher import Dispatcher
 from board import Board
 from exposure import *
 
@@ -21,6 +22,7 @@ PORT = 3649
 
 PROJECTION_SIZE = [600, 600]
 
+ray.init()
 
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
