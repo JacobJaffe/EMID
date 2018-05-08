@@ -91,7 +91,7 @@ class Board:
                     continue
                 if self.current_frame - ball.current_state.frame_number > 3:
                     ball.reset()
-                    if not ball.current_state or not ball.current_state.x:
+                    if (not ball.current_state) or (not ball.current_state.x):
                         event = BallOff(ball)
                         if ball.previous_state and ball.previous_state.x:
                             print("(REAL?) NOTE OFF: ", ball.color, ball.size)
@@ -100,7 +100,23 @@ class Board:
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
-                ball.send_events(self.dispatcher)
+                #ball.send_events(self.dispatcher)
+                if ball.previous_state and ball.previous_state.x:
+                    ''' A ball is still around; pitch bend please '''
+                    event = BallMove(ball)
+                    print("BALL MOVE: ", ball.color, ball.size)
+                    self.dispatcher.send(event)
+                else:
+                    ''' A ball was born; send note on '''
+                    event = BallOn(ball)
+                    print("NOTE ON: ", ball.color, ball.size)
+                    self.dispatcher.send(event)
+                ''' Send collisions: '''
+                if (ball.current_state.in_collision):
+                    event = BallCollision(ball)
+                    self.dispatcher.send(event)
+
+                    
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
