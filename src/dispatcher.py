@@ -12,7 +12,7 @@ class Dispatcher:
         self.client = udp_client.SimpleUDPClient(address, port)
         self.sock = sock
         self.messages = Queue()
-        self.server = Process(target=recieve, args=(self,))
+        self.server = Process(target=self.recieve, args=(self,))
         #self.recieve.remote(self)
 
 #    @ray.remote

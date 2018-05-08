@@ -99,21 +99,21 @@ class Board:
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
-                #ball.send_events(self.dispatcher)
-                if ball.previous_state and ball.previous_state.x:
-                    ''' A ball is still around; pitch bend please '''
-                    event = BallMove(ball)
-                    print("BALL MOVE: ", ball.color, ball.size)
-                    self.dispatcher.send(event)
-                else:
-                    ''' A ball was born; send note on '''
-                    event = BallOn(ball)
-                    print("NOTE ON: ", ball.color, ball.size)
-                    self.dispatcher.send(event)
-                ''' Send collisions: '''
-                if (ball.current_state.in_collision):
-                    event = BallCollision(ball)
-                    self.dispatcher.send(event)
+                ball.send_events(self.dispatcher)
+                #if ball.previous_state and ball.previous_state.x:
+                #    ''' A ball is still around; pitch bend please '''
+                #    event = BallMove(ball)
+                #    print("BALL MOVE: ", ball.color, ball.size)
+                #    self.dispatcher.send(event)
+                #else:
+                #    ''' A ball was born; send note on '''
+                #    event = BallOn(ball)
+                #    print("NOTE ON: ", ball.color, ball.size)
+                #    self.dispatcher.send(event)
+                #''' Send collisions: '''
+                #if (ball.current_state.in_collision):
+                #    event = BallCollision(ball)
+                #    self.dispatcher.send(event)
 
                     
 
