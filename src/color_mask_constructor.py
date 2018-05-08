@@ -82,8 +82,22 @@ def orange_mask(image):
 
             return mask
 
+def maroon_mask(image):
+            '''convert it to HSV color space'''
+            hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+            ''' select by color '''
+            mask = cv2.inRange(hsv, (158, 65, 50), (184, 188, 182))
+
+            ''' remove small blobs, then fill in gaps '''
+            mask = cv2.erode(mask, None, iterations=2)
+            mask = cv2.dilate(mask, None, iterations=3)
+
+            return mask
+
 MASK_CONSTRUCTORS = {BLUE: blue_mask,
         GREEN: green_mask,
         RED: red_mask,
         YELLOW: yellow_mask,
-        ORANGE: orange_mask}
+        ORANGE: orange_mask,
+        MAROON: maroon_mask}
