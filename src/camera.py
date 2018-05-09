@@ -93,7 +93,7 @@ class Camera:
 
             offset = np.absolute(self._corners[0]._corners[0][0] - centers[0][0])
             centers = np.array(centers)
-            warp = four_point_transform(frame, centers, offset)
+            warp = four_point_transform(frame, centers, 0)
         return frame_labled, warp
 
     def close(self):
