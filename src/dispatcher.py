@@ -16,7 +16,7 @@ class Dispatcher:
     def listen(self):
         while True:
             data, addr = self.sock.recvfrom(self.INPORT)
-            data = ''.join(str(data).decode().split('i')[-1].split(r'\x'))
+            data = int(''.join(str(data).decode().split('i')[-1].split(r'\x')).rstrip(r"'"))
             self.messages.put(data)
 
     def get_messages(self):
