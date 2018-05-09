@@ -88,15 +88,6 @@ class Board:
                 ball.previous_state.reset()
 
     def send_events(self):
-        for msg in self.dispatcher.get_messages():
-            print("Recieved message: ", msg)
-            if msg == 1:
-                map(self.reset_color, [BLUE, GREEN])
-            elif msg == 2:
-                map(self.reset_color, [RED, YELLOW, ORANGE])
-            elif msg == 3:
-                map(self.reset_color, [])
-
         ''' reset entities send note offs (previously done in mask) '''
         for m in self.masks.values():
             for ball in m.balls:
@@ -111,25 +102,20 @@ class Board:
                         self.dispatcher.send(event)
 
         for msg in self.dispatcher.get_messages():
-            print("Recieved message: ", str(msg))
+            print("Recieved message: ", msg)
+            if msg == 1:
+                for c in [BLUE, GREEN]:
+                    self.reset_color(c)
+            elif msg == 2:
+                for c in [RED, YELLOW, ORANGE]:
+                    self.reset_color(c)
+            elif msg == 3:
+                pass
+
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(self.dispatcher)
-                #if ball.previous_state and ball.previous_state.x:
-                #    ''' A ball is still around; pitch bend please '''
-                #    event = BallMove(ball)
-                #    print("BALL MOVE: ", ball.color, ball.size)
-                #    self.dispatcher.send(event)
-                #else:
-                #    ''' A ball was born; send note on '''
-                #    event = BallOn(ball)
-                #    print("NOTE ON: ", ball.color, ball.size)
-                #    self.dispatcher.send(event)
-                #''' Send collisions: '''
-                #if (ball.current_state.in_collision):
-                #    event = BallCollision(ball)
-                #    self.dispatcher.send(event)
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
