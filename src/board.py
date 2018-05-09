@@ -123,7 +123,7 @@ class Board:
                         '''
 
         for msg in self.dispatcher.get_messages():
-            print("Recieved message: ", str(msg))
+            print("Recieved message: ", msg)
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
