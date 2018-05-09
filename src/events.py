@@ -10,6 +10,16 @@ class Event(ABC):
     def as_osc_message(self):
         ...
 
+class SideCollision(Event):
+    def __init__(self, ball):
+        self.ball = ball
+        self.channel = COLOR_CHANNELS[ball.color]
+
+    def as_osc_message(self):
+        address = '/' + str(self.channel)
+        message = [self.ball.size, SIDE_COLLISION, self.ball.current_state.x, self.ball.current_state.y, self.ball.current_state.dx, self.ball.current_state.dy]
+        return address, message
+
 class BallCollision(Event):
     def __init__(self, ball):
         self.ball = ball

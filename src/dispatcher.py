@@ -15,8 +15,9 @@ class Dispatcher:
         self.server.start()
 
     def listen(self):
-        while not self.messages.empty():
+        while True:
             data, addr = self.sock.recvfrom(self.INPORT)
+            print(data)
             data = ''.join(str(data).split('i')[-1].split(r'\x')).rstrip(r"'")
             data = int(data)
             self.messages.put(data)
@@ -36,6 +37,7 @@ class Dispatcher:
         types = ['i']*2 + ['f']*4
         for item, type in zip(message, types):
             if item is None:
+                print(event.channel)
                 item = 0
             if type == 'i':
                 item = int(item)

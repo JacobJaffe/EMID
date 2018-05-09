@@ -71,7 +71,6 @@ class Ball(Entity):
         if (self.previous_state and self.previous_state.x):
             if (self.current_state and self.current_state.x):
                 event = BallMove(self)
-                #print("BALL MOVE: ", self.color, self.size)
                 dispatcher.send(event)
 
         '''

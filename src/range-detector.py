@@ -10,6 +10,14 @@
 import cv2
 import argparse
 from operator import xor
+from exposure import *
+from constants import *
+
+auto_exposure_off()
+
+def set_exposure(x):
+    set_value(EXPOSURE, x)
+set_exposure(100)
 
 
 def callback(value):

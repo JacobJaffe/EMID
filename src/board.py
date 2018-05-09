@@ -68,6 +68,8 @@ class Board:
                 isColidingWithSides = ball.check_colliding_sides(self.width, self.height)
                 if isColidingWithSides:
                     print("SIDE COLLISION: ", color, ball.size)
+                    event = SideCollision(ball)
+                    self.dispatcher.send(event)
 
 
                 ''' compare to every ball for intersection '''
