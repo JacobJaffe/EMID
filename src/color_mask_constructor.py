@@ -99,5 +99,5 @@ MASK_CONSTRUCTORS = {BLUE: blue_mask,
         GREEN: green_mask,
         RED: red_mask,
         YELLOW: yellow_mask,
-        ORANGE: orange_mask,
-        MAROON: maroon_mask}
+        ORANGE: orange_mask}
+        #MAROON: maroon_mask}
