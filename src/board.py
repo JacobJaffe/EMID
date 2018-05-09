@@ -125,22 +125,21 @@ class Board:
         for msg in self.dispatcher.get_messages():
             print("Recieved message: ", msg)
             if msg == 1:
-                for ball in self.masks[BLUE].balls:
-                    if ball.previous_state is not None:
-                        ball.previous_state.reset()
+                map(self.reset_color, [BLUE, GREEN])
             elif msg == 2:
-                for ball in self.masks[YELLOW].balls:
-                    if ball.previous_state is not None:
-                        ball.previous_state.reset()
+                map(self.reset_color, [RED, YELLOW, ORANGE])
             elif msg == 3:
-                for ball in self.masks[RED].balls:
-                    if ball.previous_state is not None:
-                        ball.previous_state.reset()
+                map(self.reset_color, [])
 
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(self.dispatcher)
+
+    def reset_color(self, color):
+        for ball in self.masks[color].balls:
+            if ball.previous_state is not None:
+                ball.previous_state.reset()
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
