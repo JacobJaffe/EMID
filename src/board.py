@@ -71,7 +71,6 @@ class Board:
                     except:
                         continue
                     self.dispatcher.send(BallCollision(b,e))
-                    self.dispatcher.send(BallCollision(e,b))
 
     def update(self, image, frame_number):
         '''
@@ -135,6 +134,7 @@ class Board:
         for color in COLORS:
             for ball in self.masks[color].balls:
                 ball.send_events(self.dispatcher)
+        self.send_collisions()
 
     def reset_color(self, color):
         for ball in self.masks[color].balls:
