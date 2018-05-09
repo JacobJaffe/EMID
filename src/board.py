@@ -83,6 +83,15 @@ class Board:
         return
 
     def send_events(self):
+        for msg in self.dispatcher.get_messages():
+            print("Recieved message: ", msg)
+            if msg == 1:
+                map(self.reset_color, [BLUE, GREEN])
+            elif msg == 2:
+                map(self.reset_color, [RED, YELLOW, ORANGE])
+            elif msg == 3:
+                map(self.reset_color, [])
+
         ''' reset entities send note offs (previously done in mask) '''
         for m in self.masks.values():
             for ball in m.balls:

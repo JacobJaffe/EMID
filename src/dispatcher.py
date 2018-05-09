@@ -9,17 +9,16 @@ class Dispatcher:
         self.INPORT = inport
         self.address = address
         self.client = udp_client.SimpleUDPClient(address, port)
+        self.sock = sock
         self.messages = Queue()
-        dp = dispatcher.Dispatcher()
-        dp.map('/1', self.enqueue)
-        # dp.map
-        self.server = Process(target=self.recieve)
+        self.server = Process(target=self.listen)
         self.server.start()
 
-#    @ray.remote
-    def recieve(self):
-        while True:
+    def listen(self):
+        while not self.messages.empty():
             data, addr = self.sock.recvfrom(self.INPORT)
+            data = ''.join(str(data).split('i')[-1].split(r'\x')).rstrip(r"'")
+            data = int(data)
             self.messages.put(data)
 
     def get_messages(self):
