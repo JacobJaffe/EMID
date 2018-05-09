@@ -107,14 +107,27 @@ class Board:
     # TODO: we should be sending messages AS SOON as we have information
     # This function will likely be completely eliminated
     def send_events(self):
-        # TODO: Send collision events
-        [self.dispatcher.send(e) for m in self.masks.values()
-                                 for b in m.balls
-                                 for e in b.get_events()]
-        self.send_collisions()
-        # for color in COLORS:
-        #     for ball in self.masks[color].balls:
-        #         ball.send_events(self.dispatcher)
+        ''' reset entities send note offs (previously done in mask) '''
+        '''
+        for m in self.masks.values():
+            for ball in m.balls:
+                if not ball.current_state.frame_number:
+                    continue
+                if self.current_frame - ball.current_state.frame_number > 3:
+                    ball.reset()
+                    if (not ball.current_state) or (not ball.current_state.x):
+                        event = BallOff(ball)
+                        if ball.previous_state and ball.previous_state.x:
+                            print("(REAL?) NOTE OFF: ", ball.color, ball.size)
+                        self.dispatcher.send(event)
+                        '''
+
+        for msg in self.dispatcher.get_messages():
+            print("Recieved message: ", str(msg))
+        ''' send ball move, note on and collisions '''
+        for color in COLORS:
+            for ball in self.masks[color].balls:
+                ball.send_events(self.dispatcher)
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None

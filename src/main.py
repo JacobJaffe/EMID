@@ -7,6 +7,7 @@ from dispatcher import Dispatcher
 from collections import deque
 import argparse
 import imutils
+import socket
 from board import Board
 from exposure import *
 
@@ -18,14 +19,17 @@ def set_exposure(x):
 set_exposure(100)
 # This port means 'EMID'
 PORT = 3649
+INPORT = 3650
 
 PROJECTION_SIZE = [600, 600]
 
-# Set up our udp client for sending to Max
-dispatcher = Dispatcher(port=PORT)
-
 # Set up our Camera based on the command line argument
 cam = Camera(int(sys.argv[1]))
+
+# Set up our udp client for sending to Max
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(('127.0.0.1', INPORT))
+dispatcher = Dispatcher(port=PORT, inport=INPORT, sock=sock)
 board = Board(dispatcher)
 
 frame_number = 0
