@@ -82,6 +82,11 @@ class Board:
                             print("COLLISON: ", color, ball.size, "with", color2, ball2.size)
         return
 
+    def reset_color(self, color):
+        for ball in self.masks[color].balls:
+            if ball.previous_state is not None:
+                ball.previous_state.reset()
+
     def send_events(self):
         for msg in self.dispatcher.get_messages():
             print("Recieved message: ", msg)
@@ -125,8 +130,6 @@ class Board:
                 #if (ball.current_state.in_collision):
                 #    event = BallCollision(ball)
                 #    self.dispatcher.send(event)
-
-                    
 
     def display(self, show_mask=False, show_image=True):
         combined_mask = None
