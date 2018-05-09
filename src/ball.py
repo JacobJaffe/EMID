@@ -68,7 +68,7 @@ class Ball(Entity):
 
         ''' Send collisions: '''
         if (self.current_state.in_collision):
-            event = BallCollision(self)
+            event = BallCollision(self, self)
             dispatcher.send(event)
 
     def get_events(self):

@@ -126,13 +126,16 @@ class Board:
             print("Recieved message: ", msg)
             if msg == 1:
                 for ball in self.masks[BLUE].balls:
-                    ball.previous_state.reset()
+                    if ball.previous_state is not None:
+                        ball.previous_state.reset()
             elif msg == 2:
                 for ball in self.masks[GREEN].balls:
-                    ball.previous_state.reset()
+                    if ball.previous_state is not None:
+                        ball.previous_state.reset()
             elif msg == 3:
                 for ball in self.masks[RED].balls:
-                    ball.previous_state.reset()
+                    if ball.previous_state is not None:
+                        ball.previous_state.reset()
 
         ''' send ball move, note on and collisions '''
         for color in COLORS:
