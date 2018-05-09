@@ -129,7 +129,7 @@ class Board:
                     if ball.previous_state is not None:
                         ball.previous_state.reset()
             elif msg == 2:
-                for ball in self.masks[GREEN].balls:
+                for ball in self.masks[YELLOW].balls:
                     if ball.previous_state is not None:
                         ball.previous_state.reset()
             elif msg == 3:
