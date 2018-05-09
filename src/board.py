@@ -124,6 +124,16 @@ class Board:
 
         for msg in self.dispatcher.get_messages():
             print("Recieved message: ", msg)
+            if msg == 1:
+                for ball in self.masks[BLUE].balls:
+                    ball.previous_state.reset()
+            elif msg == 2:
+                for ball in self.masks[GREEN].balls:
+                    ball.previous_state.reset()
+            elif msg == 3:
+                for ball in self.masks[RED].balls:
+                    ball.previous_state.reset()
+
         ''' send ball move, note on and collisions '''
         for color in COLORS:
             for ball in self.masks[color].balls:

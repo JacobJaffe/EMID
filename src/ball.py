@@ -66,6 +66,11 @@ class Ball(Entity):
                 print("NOTE ON: ", self.color, self.size)
                 dispatcher.send(event)
 
+        ''' Send collisions: '''
+        if (self.current_state.in_collision):
+            event = BallCollision(self)
+            dispatcher.send(event)
+
     def get_events(self):
         '''
         Sends pitch bend events, Note on events, note off events, and collision events
